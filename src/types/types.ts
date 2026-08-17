@@ -1,18 +1,30 @@
-export {};
+export { };
 
-export interface Pokemon{
+export interface Pokemon {
     id: number;
     name: string;
     types: string[];
     abilities: string[];
     img: string;
-    user: string;
+    user?: string;
 }
 
-export interface PokemonProps{
+export interface PokemonProps {
     allPokemon: Pokemon[]
 }
 
-export interface PokemonCardProps{
+export interface PokemonCardProps {
     pokemon: Pokemon
+}
+
+export interface Ability{
+    ability:{
+        name: string;
+    }
+}
+
+export interface PokemonTyping{
+    type:{
+        name: string;
+    }
 }
