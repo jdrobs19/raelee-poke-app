@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { UnregisteredPokemon } from './pokemon/UnregisteredPokemon';
+
+const allPokemon = [
+  {
+    id: 132,
+    name: "Ditto",
+    types: [
+      "Normal"
+    ],
+    abilities: ["Copy"],
+    img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/132.png",
+    user: "test"
+  }
+]
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UnregisteredPokemon allPokemon={allPokemon}/>
     </div>
   );
 }
