@@ -1,0 +1,18 @@
+.auth-container{
+    letter-spacing: 1px;
+    display: flex;
+    margin: 5% auto;
+    justify-content: space-between;
+    align-items: center;
+    width: 40%;
+}
+
+.auth-container button{
+    cursor: pointer;
+    transition: all ease-in-out 10ms;
+
+}
+
+.auth-container button:hover{
+    transform: scale(1.1);
+}
