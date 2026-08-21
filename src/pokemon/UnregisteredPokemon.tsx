@@ -9,13 +9,15 @@ export function UnregisteredPokemon({
   allPokemon,
   removePokemon,
   addPokemon,
-  registeredPokemonIds,
+  registeredPokemonIds = [],
 }: PokemonProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredPokemon = allPokemon.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredPokemon = allPokemon.filter(
+    (pokemon) =>
+      !registeredPokemonIds.includes(pokemon.id) &&
+      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   const totalPages = Math.max(1, Math.ceil(filteredPokemon.length / pageSize));
   const firstPokemonIndex = (currentPage - 1) * pageSize;
@@ -26,7 +28,7 @@ export function UnregisteredPokemon({
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [allPokemon.length, pageSize, searchTerm]);
+  }, [allPokemon.length, registeredPokemonIds.length, pageSize, searchTerm]);
 
   return (
     <div className="unregistered-container">
@@ -50,7 +52,6 @@ export function UnregisteredPokemon({
               page="unregistered"
               onAdd={addPokemon}
               onRemove={removePokemon}
-              isRegistered={registeredPokemonIds?.includes(pokemon.id)}
             />
           );
         })}

@@ -11,9 +11,7 @@ export function PokemonCard({
   page,
   onRemove,
   onAdd,
-  isRegistered = false,
 }: PokemonCardProps) {
-  const addButtonText = isRegistered ? "Registered" : "Add";
   const isRegisteredPage: boolean = page === "registered";
   const isUnregisteredPage: boolean = page === "unregistered";
 
@@ -74,9 +72,8 @@ export function PokemonCard({
           <button
             className="add-button"
             onClick={() => handleAddPokemon(pokemon)}
-            disabled={isRegistered}
           >
-            {addButtonText}
+            Add
           </button>
         )}
         {isRegisteredPage && (

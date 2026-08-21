@@ -12,7 +12,7 @@ export function NavBar({ handleLogout, isLoggedIn }: NavBarProps) {
           {isLoggedIn && (
             <div>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">Available</Link>
               </li>
               <li>
                 <Link to="/collection">Collection</Link>

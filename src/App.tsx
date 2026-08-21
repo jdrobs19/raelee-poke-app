@@ -124,10 +124,9 @@ function App() {
     getUsersPokemon();
   }, [user]);
 
-  const addPokemon = (pokemon: Pokemon) : void => {
+  const addPokemon = (pokemon: Pokemon): void => {
     const pokemonForUser = { ...pokemon, user };
-    const updatedPokemon = [...usersPokemon, pokemonForUser];
-    setUsersPokemon(updatedPokemon);
+    setUsersPokemon((currentPokemon) => [...currentPokemon, pokemonForUser]);
   };
 
   const removePokemon = (pokemonName: string): void => {
@@ -144,7 +143,7 @@ function App() {
     }
   };
 
-  const HomeScreen = () => (
+  const UnregisteredScreen = () => (
     <div>
       <UnregisteredPokemon
         allPokemon={unregisteredPokemon}
@@ -202,7 +201,7 @@ function App() {
             element={
               isRegistered ? (
                 isLoggedIn ? (
-                  <HomeScreen />
+                  <UnregisteredScreen />
                 ) : (
                   LoginScreen
                 )

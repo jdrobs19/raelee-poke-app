@@ -24,7 +24,6 @@ export interface PokemonCardProps {
   page: string;
   onRemove?: Function;
   onAdd?: Function;
-  isRegistered?: boolean;
 }
 
 export interface Ability {
