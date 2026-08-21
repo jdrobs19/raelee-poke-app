@@ -3,6 +3,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./auth.css";
 import {useNavigate} from "react-router-dom";
+import { loginErrorNotification } from "../notifications";
 
 export function Login({
   auth,
@@ -22,12 +23,13 @@ export function Login({
                 const user = userCredential.user;
                 isRegistered(true);
                 isLoggedIn(true);
-                setUser(user.email ?? "");
+                setUser(user.uid);
                 navigate("/");
             } 
         )
     } catch (error) {
         isRegistered(false);
+        loginErrorNotification(error as Error);
     }
   }
 

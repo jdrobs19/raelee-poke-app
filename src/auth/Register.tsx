@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
+import { registerErrorNotification, registerSuccessNotification } from "../notifications";
 
 export function Register({
   auth,
@@ -22,12 +23,14 @@ export function Register({
                 const user = userCredential.user;
                 isRegistered(true);
                 isLoggedIn(true);
-                setUser(user.email ?? "");
+                setUser(user.uid);
                 navigate("/");
+                registerSuccessNotification();
             } 
         )
     } catch (error) {
         isRegistered(false);
+        registerErrorNotification(error as Error);
     }
   }
 

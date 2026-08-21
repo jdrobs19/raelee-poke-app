@@ -4,8 +4,8 @@ import { Register } from "./auth/Register";
 import { Login } from "./auth/Login";
 import { UnregisteredPokemon } from "./pokemon/UnregisteredPokemon";
 import { Pokemon, PokemonTyping, Ability } from "./types/types";
-import { getAuth, signOut } from "firebase/auth";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { Routes, Route, BrowserRouter as Router, Navigate } from "react-router-dom";
 import { RegisteredPokemon } from "./pokemon/RegisteredPokemon";
 import { db } from "./firebase/firebaseConfig";
 import {
@@ -15,24 +15,41 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { NavBar } from "./navBar";
+import { ToastContainer } from "react-toastify";
+import { logoutErrorNotification, logoutSuccessNotification } from "./notifications";
 
 function App() {
   const auth = getAuth();
   const [isRegistered, setIsRegistered] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<string>("");
+  const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [unregisteredPokemon, setUnregisteredPokemon] = useState<Pokemon[]>([]);
   const [usersPokemon, setUsersPokemon] = useState<Pokemon[]>([]);
 
   useEffect(() => {
+    return onAuthStateChanged(auth, (firebaseUser) => {
+      const userId = firebaseUser?.uid ?? "";
+      const loggedIn = Boolean(firebaseUser);
+
+      setUser(userId);
+      setIsLoggedIn(loggedIn);
+      setIsRegistered(loggedIn);
+      setAuthLoading(false);
+    });
+  }, [auth]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
     const getAllPokemonData = async () => {
       const apiUrl: string = "https://pokeapi.co/api/v2/";
-      const limit: number = 25;
+      const limit: number = 10000;
       const offset: number = 0;
       const url: string = `${apiUrl}pokemon?limit=${limit}&offset=${offset}`;
 
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, { signal: abortController.signal });
         if (!response.ok) {
           throw new Error("No reponse received");
         }
@@ -47,12 +64,15 @@ function App() {
 
         const getIndividualPokemon = await Promise.all(
           list.map(async (pokemon) => {
-            const response = await fetch(pokemon.url);
+            const response = await fetch(pokemon.url, {
+              signal: abortController.signal,
+            });
             if (!response.ok) {
               throw new Error(`Could not fetch ${pokemon.name}`);
             }
 
             const pokemonData = await response.json();
+            const id = pokemonData.id;
             const types = pokemonData.types.map(
               ({ type }: PokemonTyping) => type.name,
             );
@@ -62,18 +82,29 @@ function App() {
             const { sprites } = pokemonData;
             const img = sprites.front_shiny;
 
-            return { ...pokemon, types, abilities, img, user };
+            return { ...pokemon, id, types, abilities, img, user: "" };
           }),
         );
-        setUnregisteredPokemon(getIndividualPokemon);
+        if (!abortController.signal.aborted) {
+          setUnregisteredPokemon(getIndividualPokemon);
+        }
       } catch (err) {
-        console.error("Error fetching from PokeAPI: ", err);
+        if (!abortController.signal.aborted) {
+          console.error("Error fetching from PokeAPI: ", err);
+        }
       }
     };
     getAllPokemonData();
-  }, [user]);
+
+    return () => abortController.abort();
+  }, []);
 
   useEffect(() => {
+    if (!user) {
+      setUsersPokemon([]);
+      return;
+    }
+
     const getUsersPokemon = async () => {
       try {
         const userPokemonQuery = query(
@@ -91,10 +122,11 @@ function App() {
       }
     };
     getUsersPokemon();
-  }, [user, db]);
+  }, [user]);
 
   const addPokemon = (pokemon: Pokemon) : void => {
-    const updatedPokemon = [...usersPokemon, pokemon];
+    const pokemonForUser = { ...pokemon, user };
+    const updatedPokemon = [...usersPokemon, pokemonForUser];
     setUsersPokemon(updatedPokemon);
   };
 
@@ -106,10 +138,9 @@ function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      setIsLoggedIn(false);
-      setUser("");
+      logoutSuccessNotification();
     } catch (error) {
-      console.error(error);
+      logoutErrorNotification(error as Error);
     }
   };
 
@@ -119,6 +150,7 @@ function App() {
         allPokemon={unregisteredPokemon}
         user={user}
         addPokemon={addPokemon}
+        registeredPokemonIds={usersPokemon.map(({ id }) => id)}
       />
     </div>
   );
@@ -149,14 +181,22 @@ function App() {
     />
   );
 
+  if (authLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
   return (
     <div className="App">
+      <ToastContainer/>
       <Router>
           <NavBar handleLogout={handleLogout} isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/login" element={LoginScreen} />
           <Route path="/register" element={RegisterScreen} />
-          <Route path="/collection" element={CollectionScreen} />
+          <Route
+            path="/collection"
+            element={isLoggedIn ? CollectionScreen : <Navigate to="/login" replace />}
+          />
           <Route
             path="/"
             element={

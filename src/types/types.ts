@@ -16,6 +16,7 @@ export interface PokemonProps {
   user: string;
   removePokemon?: Function;
   addPokemon?: Function;
+  registeredPokemonIds?: number[];
 }
 
 export interface PokemonCardProps {
@@ -23,6 +24,7 @@ export interface PokemonCardProps {
   page: string;
   onRemove?: Function;
   onAdd?: Function;
+  isRegistered?: boolean;
 }
 
 export interface Ability {

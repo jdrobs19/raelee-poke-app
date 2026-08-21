@@ -1,18 +1,47 @@
-.auth-container{
-    letter-spacing: 1px;
+.auth-container {
     display: flex;
-    margin: 5% auto;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
     align-items: center;
-    width: 40%;
+    justify-content: center;
+    width: min(100%, 600px);
+    margin: 5% auto;
+    letter-spacing: 1px;
 }
 
-.auth-container button{
+.auth-container h2 {
+    flex-basis: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.auth-container input {
+    min-width: 0;
+    padding: 0.65rem;
+    border: 2px solid #9494b4;
+    border-radius: 5px;
+}
+
+.auth-container button {
+    padding: 0.65rem 1rem;
     cursor: pointer;
     transition: all ease-in-out 10ms;
-
 }
 
-.auth-container button:hover{
+.auth-container button:hover {
     transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+    .auth-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: min(100%, 360px);
+        margin: 2rem auto;
+    }
+
+    .auth-container h2,
+    .auth-container button {
+        align-self: center;
+    }
 }
