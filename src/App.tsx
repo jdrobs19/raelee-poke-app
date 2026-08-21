@@ -5,8 +5,16 @@ import { Login } from "./auth/Login";
 import { UnregisteredPokemon } from "./pokemon/UnregisteredPokemon";
 import { Pokemon, PokemonTyping, Ability } from "./types/types";
 import { getAuth, signOut } from "firebase/auth";
-import { Routes, Route, Link, BrowserRouter as Router } from "react-router-dom";
-import pokeball from "./img/pokeball-png-45334.png";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { RegisteredPokemon } from "./pokemon/RegisteredPokemon";
+import { db } from "./firebase/firebaseConfig";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { NavBar } from "./navBar";
 
 function App() {
   const auth = getAuth();
@@ -14,6 +22,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<string>("");
   const [unregisteredPokemon, setUnregisteredPokemon] = useState<Pokemon[]>([]);
+  const [usersPokemon, setUsersPokemon] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     const getAllPokemonData = async () => {
@@ -53,7 +62,7 @@ function App() {
             const { sprites } = pokemonData;
             const img = sprites.front_shiny;
 
-            return { ...pokemon, types, abilities, img };
+            return { ...pokemon, types, abilities, img, user };
           }),
         );
         setUnregisteredPokemon(getIndividualPokemon);
@@ -62,7 +71,37 @@ function App() {
       }
     };
     getAllPokemonData();
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    const getUsersPokemon = async () => {
+      try {
+        const userPokemonQuery = query(
+          collection(db, "pokemon"),
+          where("user", "==", user),
+        );
+        const querySnapshot = await getDocs(userPokemonQuery);
+        const userPokemonData: Pokemon[] = [];
+        querySnapshot.forEach((doc) => {
+          userPokemonData.push(doc.data() as Pokemon);
+        });
+        setUsersPokemon(userPokemonData);
+      } catch (err) {
+        console.error("Error fetching user's pokemon: ", err);
+      }
+    };
+    getUsersPokemon();
+  }, [user, db]);
+
+  const addPokemon = (pokemon: Pokemon) : void => {
+    const updatedPokemon = [...usersPokemon, pokemon];
+    setUsersPokemon(updatedPokemon);
+  };
+
+  const removePokemon = (pokemonName: string): void => {
+    const updatedPokemon = usersPokemon.filter(({ name }) => name !== pokemonName);
+    setUsersPokemon(updatedPokemon);
+  };
 
   const handleLogout = async () => {
     try {
@@ -70,13 +109,17 @@ function App() {
       setIsLoggedIn(false);
       setUser("");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
   const HomeScreen = () => (
     <div>
-      <UnregisteredPokemon allPokemon={unregisteredPokemon} />
+      <UnregisteredPokemon
+        allPokemon={unregisteredPokemon}
+        user={user}
+        addPokemon={addPokemon}
+      />
     </div>
   );
 
@@ -98,37 +141,22 @@ function App() {
     />
   );
 
+  const CollectionScreen = (
+    <RegisteredPokemon
+      user={user}
+      allPokemon={usersPokemon}
+      removePokemon={removePokemon}
+    />
+  );
+
   return (
     <div className="App">
       <Router>
-        <div className="nav-container">
-          <img src={pokeball} alt="pokeball" />
-          <h1 className="logo-text">Raelee's Pokedex</h1>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li onClick={handleLogout}>
-                <Link to="/logout">Logout</Link>
-              </li>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>
-              <div>
-                <li>
-                  <Link to="/collection">Collection</Link>
-                </li>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-              </div>
-            </ul>
-          </nav>
-        </div>
+          <NavBar handleLogout={handleLogout} isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/login" element={LoginScreen} />
           <Route path="/register" element={RegisterScreen} />
+          <Route path="/collection" element={CollectionScreen} />
           <Route
             path="/"
             element={

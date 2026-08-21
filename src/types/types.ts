@@ -8,15 +8,21 @@ export interface Pokemon {
   types: string[];
   abilities: string[];
   img: string;
-  user?: string;
+  user: string;
 }
 
 export interface PokemonProps {
   allPokemon: Pokemon[];
+  user: string;
+  removePokemon?: Function;
+  addPokemon?: Function;
 }
 
 export interface PokemonCardProps {
   pokemon: Pokemon;
+  page: string;
+  onRemove?: Function;
+  onAdd?: Function;
 }
 
 export interface Ability {
@@ -36,4 +42,9 @@ export interface AuthProps {
   isRegistered : (isRegistered: boolean) => void
   isLoggedIn : (isLoggedIn: boolean) => void
   setUser: (setUser: string) => void
+}
+
+export interface NavBarProps {
+  handleLogout: () => void;
+  isLoggedIn: boolean;
 }

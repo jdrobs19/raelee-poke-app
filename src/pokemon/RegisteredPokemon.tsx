@@ -2,22 +2,20 @@ import { PokemonProps } from "../types/types";
 import { PokemonCard } from "./PokemonCard";
 import "./unregisteredPokemon.css";
 
-export function UnregisteredPokemon({
+export function RegisteredPokemon({
   allPokemon,
-  removePokemon,
-  addPokemon,
+  removePokemon
 }: PokemonProps) {
   return (
     <div className="unregistered-container">
-      <h1>Unregistered Pokemon</h1>
+      <h1>Registered Pokemon</h1>
       <div className="pokemon-container">
         {allPokemon.map((pokemon, index) => {
           return (
             <PokemonCard
               pokemon={pokemon}
               key={index}
-              page="unregistered"
-              onAdd={addPokemon}
+              page="registered"
               onRemove={removePokemon}
             />
           );
