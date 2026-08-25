@@ -143,17 +143,6 @@ function App() {
     }
   };
 
-  const UnregisteredScreen = () => (
-    <div>
-      <UnregisteredPokemon
-        allPokemon={unregisteredPokemon}
-        user={user}
-        addPokemon={addPokemon}
-        registeredPokemonIds={usersPokemon.map(({ id }) => id)}
-      />
-    </div>
-  );
-
   const LoginScreen = (
     <Login
       auth={auth}
@@ -201,7 +190,12 @@ function App() {
             element={
               isRegistered ? (
                 isLoggedIn ? (
-                  <UnregisteredScreen />
+                  <UnregisteredPokemon
+                    allPokemon={unregisteredPokemon}
+                    user={user}
+                    addPokemon={addPokemon}
+                    registeredPokemonIds={usersPokemon.map(({ id }) => id)}
+                  />
                 ) : (
                   LoginScreen
                 )

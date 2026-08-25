@@ -32,7 +32,7 @@ export function UnregisteredPokemon({
 
   return (
     <div className="unregistered-container">
-      <h1>Unregistered Pokemon</h1>
+      <h1>Available Pokemon</h1>
       <div className="search-container">
         <label htmlFor="unregistered-pokemon-search">Search by name</label>
         <input
