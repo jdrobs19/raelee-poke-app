@@ -12,9 +12,7 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { db } from "./firebase/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
-import { Background } from "./components/Background";
 import { NavBar } from "./snippets/NavBar";
-import { MainPage } from "./snippets/MainPage";
 import { Footer } from "./snippets/Footer";
 
 import { ToastContainer } from "react-toastify";
@@ -22,7 +20,11 @@ import {
   logoutErrorNotification,
   logoutSuccessNotification,
 } from "./notifications";
-
+import { Search } from "./pages/Search";
+import { MyPokemon } from "./pages/MyPokemon";
+import { Pokemon } from "./pages/Pokemon";
+import { Compare } from "./pages/Compare";
+import { TcgCards } from "./pages/TcgCards";
 
 // import { NavBar } from "./navBar";
 // import { UnregisteredPokemon } from "./pokemon/UnregisteredPokemon";
@@ -35,7 +37,7 @@ function App() {
   // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   // const [user, setUser] = useState<string>("");
   // const [authLoading, setAuthLoading] = useState<boolean>(true);
-  
+
   // const [unregisteredPokemon, setUnregisteredPokemon] = useState<Pokemon[]>([]);
   // const [usersPokemon, setUsersPokemon] = useState<Pokemon[]>([]);
 
@@ -188,9 +190,18 @@ function App() {
   return (
     <div className="app-container">
       <div className="App">
-        <NavBar />
-        <MainPage />
-        <Footer />
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/search" element={<Search />}  />
+            <Route path="/list" element={<MyPokemon />}  />
+            <Route path="/pokemon" element={<Pokemon />}  />
+            <Route path="/compare" element={<Compare />}  />
+            <Route path="/tcgcards" element={<TcgCards />}  />
+            <Route path="*" element={<Navigate to="pokemon/1" replace/>} />
+          </Routes>
+          <Footer />
+        </Router>
       </div>
     </div>
 

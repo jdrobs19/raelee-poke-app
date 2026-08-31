@@ -1,7 +1,7 @@
-export function MainPage() {
+export function MainPage(Component: React.FC) {
     return (
         <div className="main-page">
-            Main Window
+            <Component />
         </div>
     );
 }
