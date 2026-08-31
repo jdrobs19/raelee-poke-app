@@ -1,0 +1,22 @@
+.footer {
+  display: grid;
+  grid-template-columns: 5rem auto 5rem;
+  border-top: 0.1rem solid rgba(128, 128, 128, 0.2);
+}
+
+.footer-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-item svg {
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.footer-nav {
+  border-left: 0.1rem solid rgba(128, 128, 128, 0.2);
+  border-right: 0.1rem solid rgba(128, 128, 128, 0.2);
+}

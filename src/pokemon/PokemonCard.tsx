@@ -1,5 +1,5 @@
 import { PokemonCardProps } from "../types/types";
-import "./PokemonCard.css";
+import "./css/PokemonCard.css";
 import { collection, addDoc, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { Pokemon } from "../types/types";

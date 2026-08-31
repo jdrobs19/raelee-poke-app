@@ -1,0 +1,27 @@
+.nav-bar{
+    display: grid;
+    grid-template-columns: 5rem auto 5rem;
+    border-bottom: .1rem solid rgba(128, 128, 128, .2);
+}
+
+.nav-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item svg{
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.nav-item img{
+    cursor: pointer;
+    height: 4rem;
+}
+
+.nav-links{
+    border-left: .1rem solid rgba(128, 128, 128, .2);
+    border-right: .1rem solid rgba(128, 128, 128, .2);
+}
