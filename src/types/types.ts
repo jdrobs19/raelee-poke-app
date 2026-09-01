@@ -71,3 +71,7 @@ export interface PokemonTypes {
     weakAgainst: string[];
   };
 }
+
+export interface UsersPokemon extends IndividualApiPokemon {
+  user?: string;
+}

@@ -1,18 +1,44 @@
 import { MainPage } from "../snippets/MainPage";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   PokemonApiData,
   IndividualApiPokemon,
   PokemonTypes,
 } from "../types/types";
-import { images, defaultImages } from "../PokemonImages";
-import { pokemonTypes } from "../PokemonTypes";
+import { images, defaultImages } from "../utils/PokemonImages";
+import { pokemonTypes } from "../utils/PokemonTypes";
+import { PokemonDetailsCard } from "../components/PokemonDetailsCard";
+import "../css/pages/Search.css";
+import { PAGE_SIZE_OPTIONS } from "../utils/Constants";
 
 export function Search() {
   const [pokemonData, setPokemonData] = useState<PokemonApiData[]>([]);
   const [individualPokemon, setIndividualPokemon] = useState<
     IndividualApiPokemon[]
   >([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const sortedPokemon = [...individualPokemon].sort((a, b) => a.id - b.id);
+  const filteredPokemon = sortedPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()),
+  );
+  const totalPages = Math.max(1, Math.ceil(filteredPokemon.length / pageSize));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const firstPokemonIndex = (safeCurrentPage - 1) * pageSize;
+  const visiblePokemon = filteredPokemon.slice(
+    firstPokemonIndex,
+    firstPokemonIndex + pageSize,
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [individualPokemon.length, pageSize, searchTerm]);
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages));
+  }, [totalPages]);
 
   //Fetch all Pokemon data
   const getAllPokemonData = async () => {
@@ -33,7 +59,7 @@ export function Search() {
     }
   };
 
-  const getIndividualPokemonData = async () => {
+  const getIndividualPokemonData = useCallback(async () => {
     if (pokemonData.length === 0) {
       console.log("Pokémon data not loaded yet");
       return [];
@@ -91,7 +117,7 @@ export function Search() {
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
     }
-  };
+  }, [pokemonData]);
 
   useEffect(() => {
     getAllPokemonData();
@@ -99,11 +125,58 @@ export function Search() {
 
   useEffect(() => {
     if (pokemonData.length > 0) {
-      getIndividualPokemonData();
+      void getIndividualPokemonData();
     }
-  }, [pokemonData]);
+  }, [pokemonData.length, getIndividualPokemonData]);
 
-  return <div className="search"></div>;
+  return (
+    <>
+      <div className="search">
+        <input
+          type="text"
+          name="search"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder="Search Pokémon"
+        />
+        <PokemonDetailsCard pokemon={visiblePokemon} />
+        <div className="pagination" aria-label="Registered Pokemon pages">
+          <label>
+            Pokemon per page:
+            <select
+              value={pageSize}
+              onChange={(event) => setPageSize(Number(event.target.value))}
+            >
+              {PAGE_SIZE_OPTIONS.map((option) => (
+                <option value={option} key={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+            disabled={safeCurrentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {safeCurrentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              setCurrentPage((page) => Math.min(totalPages, page + 1))
+            }
+            disabled={safeCurrentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default MainPage(Search);
