@@ -1,7 +1,16 @@
 import { PokemonTypes, UsersPokemon } from "../types/types";
 import "../css/component/PokemonDetailsCard.css";
+import { MdCompareArrows, MdAdd, MdRemoveCircleOutline } from "react-icons/md";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function PokemonDetailsCard({ pokemon }: { pokemon: UsersPokemon[] }) {
+  const CompareIcon = MdCompareArrows as any;
+  const AddIcon = MdAdd as any;
+  const RemoveIcon = MdRemoveCircleOutline as any;
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <div className="pokemon-details-card">
       <div className="pokemon-details">
@@ -10,13 +19,23 @@ export function PokemonDetailsCard({ pokemon }: { pokemon: UsersPokemon[] }) {
           pokemon.map((p: UsersPokemon) => {
             return (
               <div className="pokemon-card" key={p.id}>
-                <div className="pokemon-card-list"></div>
-                <div className="pokemon-card-compare"></div>
+                <div className="pokemon-card-list">
+                  {location.pathname.includes("/search") ||
+                  location.pathname.includes("/pokemon") ? (
+                    <AddIcon className="add-icon" />
+                  ) : (
+                    <RemoveIcon className="remove-icon" />
+                  )}
+                </div>
+                <div className="pokemon-card-compare">
+                  <CompareIcon className="compare-icon" />
+                </div>
                 <h3 className="pokemon-card-name">{p.name}</h3>
                 <img
                   className="pokemon-card-image"
                   src={p.images}
                   alt={p.name}
+                  onClick={() => navigate(`/pokemon/${p.id}`)}
                 />
                 <div className="pokemon-card-types">
                   {p.types.map((type: PokemonTypes, index: number) => {

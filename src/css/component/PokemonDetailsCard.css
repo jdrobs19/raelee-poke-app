@@ -1,56 +1,92 @@
-.pokemon-details-card{
-    max-height: 80vh;
-    overflow-y: scroll;
+.pokemon-details-card {
+  max-height: 70vh;
+  overflow-y: scroll;
 }
 
-.pokemon-details{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 3rem;
-    margin: 3rem;
-    margin-top: 2rem;
+.pokemon-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
+  margin: 3rem;
+  margin-top: 0.5rem;
 }
 
-.pokemon-card{
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: rgba(0,0,0,0.25) 0 5px 15px;
-    position: relative;   
+.pokemon-card {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px;
+  position: relative;
 }
 
-.pokemon-card-name{
-    text-align: center;
-    cursor: pointer;
-    margin-top: 1rem;
+.pokemon-card-name {
+  text-align: center;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 
-.pokemon-card img{
-    height: 10rem;
-    cursor: pointer;
+.pokemon-card img {
+  height: 10rem;
+  cursor: pointer;
 }
 
-.pokemon-card-types{
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    gap: 1rem;
+.pokemon-card-types {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 1rem;
 }
 
-.pokemon-type{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
-    gap: 0.4rem;
+.pokemon-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 0.4rem;
 }
 
-.pokemon-type img{
-    height: 2rem;
+.pokemon-type img {
+  height: 2rem;
+}
+
+.pokemon-card-list {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.8rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.pokemon-card svg {
+  transition: all 0.3s ease-in-out;
+}
+
+.pokemon-card svg:hover {
+  transform: scale(1.5);
+}
+
+.remove-icon {
+  color: red;
+}
+
+.add-icon {
+  color: green;
+}
+
+.pokemon-card-compare {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.compare-icon{
+    color: royalblue;
 }

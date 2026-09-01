@@ -8,11 +8,11 @@
       route: "/compare"
     },
     {
-      name: "Pokemon",
+      name: "Pokémon",
       route: "/pokemon"
     },
     {
-      name: "My Pokemon",
+      name: "My Pokémon",
       route: "/list"
     },
     {

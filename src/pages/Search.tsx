@@ -132,48 +132,50 @@ export function Search() {
   return (
     <>
       <div className="search">
-        <input
-          type="text"
-          name="search"
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-          placeholder="Search Pokémon"
-        />
-        <PokemonDetailsCard pokemon={visiblePokemon} />
-        <div className="pagination" aria-label="Registered Pokemon pages">
-          <label>
-            Pokemon per page:
-            <select
-              value={pageSize}
-              onChange={(event) => setPageSize(Number(event.target.value))}
+        <div className="search-controls">
+          <input
+            type="text"
+            className="search-bar"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Search Pokémon"
+          />
+          <div className="pagination" aria-label="Registered Pokemon pages">
+            <label>
+              Pokemon per page:
+              <select
+                value={pageSize}
+                onChange={(event) => setPageSize(Number(event.target.value))}
+              >
+                {PAGE_SIZE_OPTIONS.map((option) => (
+                  <option value={option} key={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              disabled={safeCurrentPage === 1}
             >
-              {PAGE_SIZE_OPTIONS.map((option) => (
-                <option value={option} key={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="button"
-            onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-            disabled={safeCurrentPage === 1}
-          >
-            Previous
-          </button>
-          <span>
-            Page {safeCurrentPage} of {totalPages}
-          </span>
-          <button
-            type="button"
-            onClick={() =>
-              setCurrentPage((page) => Math.min(totalPages, page + 1))
-            }
-            disabled={safeCurrentPage === totalPages}
-          >
-            Next
-          </button>
+              Previous
+            </button>
+            <span>
+              Page {safeCurrentPage} of {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentPage((page) => Math.min(totalPages, page + 1))
+              }
+              disabled={safeCurrentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
         </div>
+        <PokemonDetailsCard pokemon={visiblePokemon} />
       </div>
     </>
   );

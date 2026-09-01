@@ -4,4 +4,62 @@
     max-width: 100%;
     color: white;
     text-transform: capitalize;
+    padding-top: 1rem;
+}
+
+.search-controls{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0 3rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+
+.search-bar{
+    width: 38%;
+    min-width: 260px;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    border: 2px solid #9494b4;
+    color: white;
+    background: rgba(255,255,255,0.08);
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  background-color: #5a4a9c;
+  border: 2px solid #9494b4;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination select {
+  padding: 0.4rem;
+  border: 2px solid #9494b4;
+  border-radius: 5px;
 }
