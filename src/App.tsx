@@ -54,13 +54,32 @@ function App() {
   // }, [auth]);
 
   // useEffect(() => {
-  //   const abortController = new AbortController();
-
   //   const getAllPokemonData = async () => {
   //     const apiUrl: string = "https://pokeapi.co/api/v2/";
-  //     const limit: number = 10000;
-  //     const offset: number = 0;
-  //     const url: string = `${apiUrl}pokemon?limit=${limit}&offset=${offset}`;
+  //     const limit: number = 2500;
+  //     const url: string = `${apiUrl}pokemon?limit=${limit}`;
+
+  //     try {
+  //       const response = await fetch(url);
+  //       if (!response.ok) {
+  //         throw new Error("No response received");
+  //       }
+
+  //       const data = await response.json();
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   console.log(getAllPokemonData)
+  //   getAllPokemonData();
+  // }, []);
+
+  
+
+  // useEffect(() => {
+  //   const abortController = new AbortController();
 
   //     try {
   //       const response = await fetch(url, { signal: abortController.signal });
@@ -193,12 +212,12 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
-            <Route path="/search" element={<Search />}  />
-            <Route path="/list" element={<MyPokemon />}  />
-            <Route path="/pokemon" element={<Pokemon />}  />
-            <Route path="/compare" element={<Compare />}  />
-            <Route path="/tcgcards" element={<TcgCards />}  />
-            <Route path="*" element={<Navigate to="pokemon/1" replace/>} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/list" element={<MyPokemon />} />
+            <Route path="/pokemon/:id" element={<Pokemon />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/tcgcards" element={<TcgCards />} />
+            <Route path="*" element={<Navigate to="pokemon/1" replace />} />
           </Routes>
           <Footer />
         </Router>
