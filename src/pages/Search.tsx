@@ -11,7 +11,13 @@ import { PokemonDetailsCard } from "../components/PokemonDetailsCard";
 import "../css/pages/Search.css";
 import { PAGE_SIZE_OPTIONS } from "../utils/Constants";
 
-export function Search() {
+export function Search({
+  compareQueue = [],
+  onToggleCompare,
+}: {
+  compareQueue?: IndividualApiPokemon[];
+  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
+}) {
   const [pokemonData, setPokemonData] = useState<PokemonApiData[]>([]);
   const [individualPokemon, setIndividualPokemon] = useState<
     IndividualApiPokemon[]
@@ -94,8 +100,8 @@ export function Search() {
                   image: typeInfo.image,
                   resistance: typeInfo.resistance,
                   weakness: typeInfo.weakness,
-                  strongAgainst: typeInfo.strength,
-                  weakAgainst: typeInfo.vulnerable,
+                  strength: typeInfo.strength,
+                  vulnerable: typeInfo.vulnerable,
                 };
               }
 
@@ -142,7 +148,7 @@ export function Search() {
           />
           <div className="pagination" aria-label="Registered Pokemon pages">
             <label>
-              Pokemon per page:
+              Pokémon per page:
               <select
                 value={pageSize}
                 onChange={(event) => setPageSize(Number(event.target.value))}
@@ -175,7 +181,11 @@ export function Search() {
             </button>
           </div>
         </div>
-        <PokemonDetailsCard pokemon={visiblePokemon} />
+        <PokemonDetailsCard
+          pokemon={visiblePokemon}
+          compareQueue={compareQueue}
+          onToggleCompare={onToggleCompare}
+        />
       </div>
     </>
   );

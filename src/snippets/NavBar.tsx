@@ -1,6 +1,6 @@
 import pokeball from "../assets/pokeball-png-45334.png";
 import { GiHamburgerMenu } from "react-icons/gi";
-import NavRoutes from "../NavRoutes"
+import NavRoutes from "../utils/NavRoutes"
 import "../css/snippets/NavBar.css"
 import { NavLink, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";

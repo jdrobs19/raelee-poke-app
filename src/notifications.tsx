@@ -26,7 +26,7 @@ export const pokemonAddNotification = (pokemonName: string) => {
 }
 
 export const pokemonRemoveNotification = (pokemonName: string) => {
-    toast.success(`${pokemonName} removed from your collection!`, {
+    toast.success(`${pokemonName} removed from your collection`, {
         position: "top-right"
     });
 }
@@ -41,4 +41,16 @@ export const registerSuccessNotification = () => {
     toast.success("Registration successful!", {
         position: "top-right"
     });
+}
+
+export const compareQueueNotification = (pokemonName: string, action: string) => {
+    if (action === "add") {
+        toast.success(`${pokemonName} added to compare`, {
+            position: "top-right"
+        });
+    } else if (action === "remove") {
+        toast.success(`${pokemonName} removed from compare`, {
+            position: "top-right"
+        });
+    }
 }

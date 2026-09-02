@@ -66,12 +66,18 @@ export interface PokemonTypes {
   [key: string]: {
     image: string;
     resistance: string[];
+    strength: string[];
     weakness: string[];
-    strongAgainst: string[];
-    weakAgainst: string[];
+    vulnerable: string[];
   };
 }
 
 export interface UsersPokemon extends IndividualApiPokemon {
   user?: string;
 }
+
+export type MatchupType =
+  "resistance" |
+  "weakness" |
+  "strength" |
+  "vulnerable";

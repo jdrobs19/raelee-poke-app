@@ -17,6 +17,7 @@ import { Footer } from "./snippets/Footer";
 
 import { ToastContainer } from "react-toastify";
 import {
+  compareQueueNotification,
   logoutErrorNotification,
   logoutSuccessNotification,
 } from "./notifications";
@@ -25,6 +26,7 @@ import { MyPokemon } from "./pages/MyPokemon";
 import { Pokemon } from "./pages/Pokemon";
 import { Compare } from "./pages/Compare";
 import { TcgCards } from "./pages/TcgCards";
+import { IndividualApiPokemon } from "./types/types";
 
 // import { NavBar } from "./navBar";
 // import { UnregisteredPokemon } from "./pokemon/UnregisteredPokemon";
@@ -75,8 +77,6 @@ function App() {
   //   console.log(getAllPokemonData)
   //   getAllPokemonData();
   // }, []);
-
-  
 
   // useEffect(() => {
   //   const abortController = new AbortController();
@@ -206,16 +206,56 @@ function App() {
   //   return <div className="App">Loading...</div>;
   // }
 
+  const [comparePokemon, setComparePokemon] = useState<IndividualApiPokemon[]>(
+    [],
+  );
+
+  const toggleComparePokemon = (pokemon: IndividualApiPokemon) => {
+    const isAlreadyInCompare = comparePokemon.some((p) => p.id === pokemon.id);
+
+    if (isAlreadyInCompare) {
+      setComparePokemon((current) => current.filter((p) => p.id !== pokemon.id));
+      compareQueueNotification(pokemon.name, "remove");
+      return;
+    }
+
+    if (comparePokemon.length >= 2) {
+      setComparePokemon((current) => [...current.slice(1), pokemon]);
+      compareQueueNotification(pokemon.name, "add");
+      return;
+    }
+
+    setComparePokemon((current) => [...current, pokemon]);
+    compareQueueNotification(pokemon.name, "add");
+  };
+
   return (
     <div className="app-container">
+      <ToastContainer />
       <div className="App">
         <Router>
           <NavBar />
           <Routes>
-            <Route path="/search" element={<Search />} />
+            <Route
+              path="/search"
+              element={
+                <Search
+                  compareQueue={comparePokemon}
+                  onToggleCompare={toggleComparePokemon}
+                />
+              }
+            />
             <Route path="/list" element={<MyPokemon />} />
             <Route path="/pokemon/:id" element={<Pokemon />} />
-            <Route path="/compare" element={<Compare />} />
+            <Route
+              path="/compare"
+              element={
+                <Compare
+                  compareQueue={comparePokemon}
+                  onToggleCompare={toggleComparePokemon}
+                />
+              }
+            />
             <Route path="/tcgcards" element={<TcgCards />} />
             <Route path="*" element={<Navigate to="pokemon/1" replace />} />
           </Routes>
