@@ -4,6 +4,7 @@ import {
   PokemonApiData,
   IndividualApiPokemon,
   PokemonTypes,
+  SearchProps,
 } from "../types/types";
 import { images, defaultImages } from "../utils/PokemonImages";
 import { pokemonTypes } from "../utils/PokemonTypes";
@@ -14,10 +15,8 @@ import { PAGE_SIZE_OPTIONS } from "../utils/Constants";
 export function Search({
   compareQueue = [],
   onToggleCompare,
-}: {
-  compareQueue?: IndividualApiPokemon[];
-  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
-}) {
+  addPokemon,
+}: SearchProps) {
   const [pokemonData, setPokemonData] = useState<PokemonApiData[]>([]);
   const [individualPokemon, setIndividualPokemon] = useState<
     IndividualApiPokemon[]
@@ -185,6 +184,7 @@ export function Search({
           pokemon={visiblePokemon}
           compareQueue={compareQueue}
           onToggleCompare={onToggleCompare}
+          addPokemon={addPokemon}
         />
       </div>
     </>

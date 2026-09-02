@@ -50,6 +50,52 @@ export interface AuthProps {
   setUser: (setUser: string) => void;
 }
 
+export interface MyPokemonPageProps {
+  auth: Auth;
+  user: string;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  isRegistered: (isRegistered: boolean) => void;
+  setUser: (setUser: string) => void;
+  usersPokemon: UsersPokemon[];
+  removePokemon?: (pokemonId: number) => void;
+}
+
+export interface PokemonDetailsCardProps {
+  pokemon: IndividualApiPokemon[];
+  compareQueue?: IndividualApiPokemon[];
+  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
+  addPokemon?: (pokemon: IndividualApiPokemon) => void;
+  removePokemon?: (pokemonId: number) => void;
+}
+
+export interface SearchProps {
+  compareQueue?: IndividualApiPokemon[];
+  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}
+
+export interface CompareProps {
+  compareQueue?: IndividualApiPokemon[];
+  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}
+
+export interface CompareCardProps {
+  pokemon?: IndividualApiPokemon;
+  isEmpty?: boolean;
+  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}
+
+export interface FooterProps {
+  handleLogout: () => void;
+}
+
+export interface User {
+  user: string;
+}
+
 export interface PokemonApiData {
   name: string;
   url: string;
@@ -76,8 +122,4 @@ export interface UsersPokemon extends IndividualApiPokemon {
   user?: string;
 }
 
-export type MatchupType =
-  "resistance" |
-  "weakness" |
-  "strength" |
-  "vulnerable";
+export type MatchupType = "resistance" | "weakness" | "strength" | "vulnerable";

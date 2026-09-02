@@ -1,7 +1,8 @@
 import { MdLogout } from "react-icons/md";
 import "../css/snippets/Footer.css"
+import { FooterProps } from "../types/types";
 
-export function Footer() {
+export function Footer({handleLogout}: FooterProps) {
 
     const LogoutIcon = MdLogout as any;
 
@@ -10,7 +11,7 @@ export function Footer() {
             <div className="footer-item"></div>
             <div className="footer-nav"></div>
             <div className="footer-item">
-                <LogoutIcon/>
+                <LogoutIcon onClick={handleLogout} />
             </div>
         </footer>
     );

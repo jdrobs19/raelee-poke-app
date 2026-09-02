@@ -1,4 +1,8 @@
-import { IndividualApiPokemon, PokemonTypes } from "../types/types";
+import {
+  IndividualApiPokemon,
+  PokemonDetailsCardProps,
+  PokemonTypes,
+} from "../types/types";
 import "../css/component/PokemonDetailsCard.css";
 import { MdCompareArrows, MdAdd, MdRemoveCircleOutline } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,11 +11,9 @@ export function PokemonDetailsCard({
   pokemon,
   compareQueue = [],
   onToggleCompare,
-}: {
-  pokemon: IndividualApiPokemon[];
-  compareQueue?: IndividualApiPokemon[];
-  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
-}) {
+  addPokemon,
+  removePokemon,
+}: PokemonDetailsCardProps) {
   const CompareIcon = MdCompareArrows as any;
   const AddIcon = MdAdd as any;
   const RemoveIcon = MdRemoveCircleOutline as any;
@@ -34,23 +36,32 @@ export function PokemonDetailsCard({
                 <div className="pokemon-card-list">
                   {location.pathname.includes("/search") ||
                   location.pathname.includes("/pokemon") ? (
-                    <AddIcon className="add-icon" />
+                    <AddIcon
+                      className="add-icon"
+                      onClick={() => addPokemon?.(p)}
+                    />
                   ) : (
-                    <RemoveIcon className="remove-icon" />
+                    <RemoveIcon
+                      className="remove-icon"
+                      onClick={() => removePokemon?.(p.id)}
+                    />
                   )}
                 </div>
                 <button
                   type="button"
                   className="pokemon-card-compare"
                   aria-label={
-                    isQueued ? `remove ${p.name} from compare` : `compare ${p.name}`
+                    isQueued
+                      ? `remove ${p.name} from compare`
+                      : `compare ${p.name}`
                   }
                   onClick={() => onToggleCompare?.(p)}
                 >
-                {
-                   !isQueued ? (<CompareIcon className="compare-icon" /> ) :
-                   ( <RemoveIcon className="remove-icon" /> )
-                }
+                  {!isQueued ? (
+                    <CompareIcon className="compare-icon" />
+                  ) : (
+                    <RemoveIcon className="remove-icon" />
+                  )}
                 </button>
                 <h3 className="pokemon-card-name">{p.name}</h3>
                 <img

@@ -1,4 +1,5 @@
 import {
+    CompareCardProps,
   IndividualApiPokemon,
   MatchupType,
   PokemonTypes,
@@ -13,11 +14,8 @@ export function CompareCard({
   pokemon,
   isEmpty = false,
   onToggleCompare,
-}: {
-  pokemon?: IndividualApiPokemon;
-  isEmpty?: boolean;
-  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
-}) {
+  addPokemon
+}: CompareCardProps) {
   const AddIcon = MdAdd as any;
   const navigate = useNavigate();
 
@@ -147,7 +145,12 @@ export function CompareCard({
             </div>
           </div>
           <div className="compare-card-buttons">
-            <button className="compare-add-button">Add</button>
+            <button
+              className="compare-add-button"
+              onClick={() => addPokemon(pokemon)}
+            >
+              Add
+            </button>
             <button
               className="compare-view-button"
               onClick={() => navigate(`/pokemon/${pokemon.id}`)}
