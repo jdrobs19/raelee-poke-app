@@ -1,6 +1,5 @@
 import {
   CompareCardProps,
-  IndividualApiPokemon,
   MatchupType,
   PokemonTypes,
 } from "../types/types";
@@ -9,6 +8,13 @@ import { useMemo } from "react";
 import "../css/component/CompareCard.css";
 import { pokemonTypes } from "../utils/PokemonTypes";
 import { useNavigate } from "react-router-dom";
+
+const matchupTypes: MatchupType[] = [
+  "strength",
+  "weakness",
+  "resistance",
+  "vulnerable",
+];
 
 export function CompareCard({
   pokemon,
@@ -49,12 +55,6 @@ export function CompareCard({
     return typeArray;
   };
 
-  const matchupTypes: MatchupType[] = [
-    "strength",
-    "weakness",
-    "resistance",
-    "vulnerable",
-  ];
   const matchupLabels = {
     strength: "Strength",
     weakness: "Weakness",

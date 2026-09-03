@@ -109,19 +109,11 @@ export function Pokemon({
           evolution.find(({ pokemon }) => pokemon.name === pokemonData.name)
             ?.stage ?? 1;
 
-        const pokemonStats: PokemonStats = pokemonData.stats.reduce(
-          (
-            stats: PokemonStats,
-            stat: { base_stat: number; stat: { name: string } },
-          ) => {
-            const statName = stat.stat.name;
-
-            return {
-              ...stats,
-              [statName]: stat.base_stat,
-            };
-          },
-          {} as PokemonStats,
+        const pokemonStats: PokemonStats[] = pokemonData.stats.map(
+          ({ base_stat, stat }: { base_stat: number; stat: { name: string } }) => ({
+            name: stat.name,
+            value: base_stat,
+          }),
         );
 
         const pokemonAbilities = {
@@ -140,7 +132,7 @@ export function Pokemon({
             ({ type }: { type: { name: string } }) => type.name,
           ),
           image,
-          stats: [pokemonStats],
+          stats: pokemonStats,
           evolutionStage,
           evolution,
           abilities: pokemonAbilities,
@@ -151,7 +143,7 @@ export function Pokemon({
         console.error(error);
       }
     },
-    [id],
+    [id, getEvolutionData],
   );
 
   useEffect(() => {
@@ -192,7 +184,13 @@ export function Pokemon({
     <>
       {!isLoading && currentPokemon ? (
         <>
-          {currentPokemonTab === pokemonTabs.overview && <Overview />}
+          {currentPokemonTab === pokemonTabs.overview && (
+            <Overview
+              currentPokemon={currentPokemon}
+              setCurrentPokemonTab={setCurrentPokemonTab}
+              addPokemon ={addPokemon}
+            />
+          )}
           {currentPokemonTab === pokemonTabs.evolution && (
             <Evolution
               currentPokemon={currentPokemon}

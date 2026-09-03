@@ -1,5 +1,5 @@
 import { CompareCard } from "../components/CompareCard";
-import { CompareProps, IndividualApiPokemon } from "../types/types";
+import { CompareProps } from "../types/types";
 import "../css/pages/Compare.css";
 
 export function Compare({

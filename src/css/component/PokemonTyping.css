@@ -1,0 +1,60 @@
+.typing-chart ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  letter-spacing: 0.1rem;
+}
+
+.typing-chart ul li {
+  display: grid;
+  grid-template-columns: max-content 80%;
+  gap: 0.5rem;
+}
+
+.typing-chart {
+  position: absolute;
+  bottom: 8rem;
+  right: 5rem;
+  color: white;
+  padding: 1rem;
+  width: 30rem;
+
+  background:
+    linear-gradient(
+        var(--bg-color) calc(var(--dot-space) - var(--dot-size)),
+        transparent 1%
+      )
+      center,
+    var(--dot-color);
+}
+
+.typing-chart::before {
+  height: 0.3rem;
+  width: 9rem;
+  content: "";
+  background-color: var(--accent-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.add-pokemon {
+  position: absolute;
+  right: -1rem;
+  bottom: -2rem;
+  padding: 0.8rem 0.8rem;
+  background-color: transparent;
+  border: 0.1rem solid var(--accent-color);
+  outline: none;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.add-pokemon:hover {
+  background-color: var(--accent-color);
+}

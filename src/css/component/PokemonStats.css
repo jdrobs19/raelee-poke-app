@@ -1,0 +1,42 @@
+.stats-bar {
+  position: absolute;
+  left: 7rem;
+  bottom: 8rem;
+}
+
+.stats-bar ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stats-bar ul li {
+  color: white;
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stats-bar ul li progress {
+  transition: 2s ease-in-out;
+  width: 0;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.stats-bar ul li progress::-webkit-progress-bar {
+  border-radius: 1rem;
+  height: 0.3rem;
+  background-color: transparent;
+}
+
+.stats-bar ul li progress::-webkit-progress-value {
+  border-radius: 1rem;
+  background-color: var(--accent-color);
+}

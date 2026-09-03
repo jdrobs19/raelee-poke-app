@@ -90,7 +90,7 @@ export interface PokemonTypes {
 export interface PokemonDisplay {
   id: number;
   name: string;
-  types: PokemonTypes[];
+  types: string[];
   image: string;
   stats: PokemonStats[];
   evolutionStage: number;
@@ -100,7 +100,7 @@ export interface PokemonDisplay {
 
 export interface PokemonStats {
   name: string;
-  value: string;
+  value: number;
 }
 
 export interface UsersPokemon extends IndividualApiPokemon {
@@ -132,7 +132,18 @@ export interface EvolutionProps {
   addPokemon: (pokemon: IndividualApiPokemon) => void;
 }
 
-export interface MovesProps{
-  currentPokemon: PokemonDisplay
+export interface MovesProps {
+  currentPokemon: PokemonDisplay;
 }
 
+export interface OverviewProps {
+  currentPokemon: PokemonDisplay;
+  setCurrentPokemonTab: (tab: PokemonTab) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}
+
+export interface PokemonInformationProps {
+  currentPokemon: PokemonDisplay;
+  setCurrentPokemonTab: (tab: PokemonTab) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}

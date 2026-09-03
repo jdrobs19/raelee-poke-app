@@ -40,10 +40,9 @@ function App() {
   const [comparePokemon, setComparePokemon] = useState<IndividualApiPokemon[]>(
     [],
   );
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+  const [, setIsRegistered] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<string>("");
-  const [authLoading, setAuthLoading] = useState<boolean>(true);
   const [usersPokemon, setUsersPokemon] = useState<UsersPokemon[]>([]);
   const [currentPokemonTab, setCurrentPokemonTab] = useState<PokemonTab>(
     pokemonTabs.overview,
@@ -57,9 +56,8 @@ function App() {
       setUser(userId);
       setIsLoggedIn(loggedIn);
       setIsRegistered(loggedIn);
-      setAuthLoading(false);
     });
-  }, [auth]);
+  }, []);
 
   const handleLogout = async () => {
     try {
