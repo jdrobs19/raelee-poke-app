@@ -1,0 +1,35 @@
+.pokemon-moves-abilities{
+    height: 80vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.moves-title{
+    color: white;
+    padding: 1rem;
+    letter-spacing: .1rem;
+}
+
+.pokemon-move-list{
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 150px;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+.move-ability{
+    height: 100%;
+    padding: 2rem;
+    font-size: x-large;
+    background-color: rgba(255, 255, 255, .15);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, .25) 0 5px 15px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

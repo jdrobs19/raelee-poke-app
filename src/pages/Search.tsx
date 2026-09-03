@@ -9,6 +9,7 @@ import {
 import { images, defaultImages } from "../utils/PokemonImages";
 import { pokemonTypes } from "../utils/PokemonTypes";
 import { PokemonDetailsCard } from "../components/PokemonDetailsCard";
+import { Loading } from "../components/Loading";
 import "../css/pages/Search.css";
 import { PAGE_SIZE_OPTIONS } from "../utils/Constants";
 
@@ -24,6 +25,7 @@ export function Search({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const sortedPokemon = [...individualPokemon].sort((a, b) => a.id - b.id);
   const filteredPokemon = sortedPokemon.filter((pokemon) =>
@@ -70,6 +72,7 @@ export function Search({
       return [];
     }
 
+    setIsLoading(true);
     const allPokemonDetails: IndividualApiPokemon[] = [];
 
     try {
@@ -121,6 +124,8 @@ export function Search({
       setIndividualPokemon(allPokemonDetails);
     } catch (error) {
       console.error("Error fetching Pokémon data:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, [pokemonData]);
 
@@ -136,57 +141,61 @@ export function Search({
 
   return (
     <>
-      <div className="search">
-        <div className="search-controls">
-          <input
-            type="text"
-            className="search-bar"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Search Pokémon"
-          />
-          <div className="pagination" aria-label="Registered Pokemon pages">
-            <label>
-              Pokémon per page:
-              <select
-                value={pageSize}
-                onChange={(event) => setPageSize(Number(event.target.value))}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="search">
+          <div className="search-controls">
+            <input
+              type="text"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search Pokémon"
+            />
+            <div className="pagination" aria-label="Registered Pokemon pages">
+              <label>
+                Pokémon per page:
+                <select
+                  value={pageSize}
+                  onChange={(event) => setPageSize(Number(event.target.value))}
+                >
+                  {PAGE_SIZE_OPTIONS.map((option) => (
+                    <option value={option} key={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                disabled={safeCurrentPage === 1}
               >
-                {PAGE_SIZE_OPTIONS.map((option) => (
-                  <option value={option} key={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button
-              type="button"
-              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-              disabled={safeCurrentPage === 1}
-            >
-              Previous
-            </button>
-            <span>
-              Page {safeCurrentPage} of {totalPages}
-            </span>
-            <button
-              type="button"
-              onClick={() =>
-                setCurrentPage((page) => Math.min(totalPages, page + 1))
-              }
-              disabled={safeCurrentPage === totalPages}
-            >
-              Next
-            </button>
+                Previous
+              </button>
+              <span>
+                Page {safeCurrentPage} of {totalPages}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentPage((page) => Math.min(totalPages, page + 1))
+                }
+                disabled={safeCurrentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </div>
+          <PokemonDetailsCard
+            pokemon={visiblePokemon}
+            compareQueue={compareQueue}
+            onToggleCompare={onToggleCompare}
+            addPokemon={addPokemon}
+          />
         </div>
-        <PokemonDetailsCard
-          pokemon={visiblePokemon}
-          compareQueue={compareQueue}
-          onToggleCompare={onToggleCompare}
-          addPokemon={addPokemon}
-        />
-      </div>
+      )}
     </>
   );
 }

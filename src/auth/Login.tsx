@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./auth.css";
 import {useNavigate} from "react-router-dom";
-import { loginErrorNotification } from "../notifications";
+import { loginErrorNotification } from "../utils/notifications";
 
 export function Login({
   auth,

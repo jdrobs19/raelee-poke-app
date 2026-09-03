@@ -19,8 +19,7 @@
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    border: none;
-    background-color: var(--accent)
+    background-color: var(--accent-color);
 }
 
 .compare-card-empty button svg{

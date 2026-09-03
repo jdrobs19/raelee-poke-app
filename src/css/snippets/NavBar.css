@@ -41,7 +41,7 @@
   bottom: 0;
   height: 3px;
   border-radius: 999px;
-  background: white;
+  background: var(--accent-color);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }

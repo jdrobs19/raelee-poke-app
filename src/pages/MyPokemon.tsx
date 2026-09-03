@@ -7,7 +7,6 @@ import { PokemonDetailsCard } from "../components/PokemonDetailsCard";
 
 export function MyPokemon({
   auth,
-  user,
   isLoggedIn,
   isRegistered,
   setIsLoggedIn,
@@ -16,6 +15,7 @@ export function MyPokemon({
   removePokemon,
 }: MyPokemonPageProps) {
   const [showRegister, setShowRegister] = useState(false);
+  const sortedUsersPokemon = [...usersPokemon].sort((a, b) => a.id - b.id);
 
   if (!isLoggedIn) {
     return (
@@ -52,7 +52,7 @@ export function MyPokemon({
   return (
     <div className="my-pokemon">
       <PokemonDetailsCard
-        pokemon={usersPokemon}
+        pokemon={sortedUsersPokemon}
         removePokemon={removePokemon}
       />
     </div>

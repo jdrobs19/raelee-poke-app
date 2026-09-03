@@ -13,7 +13,10 @@ export function NavBar() {
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
 
   useEffect(() => {
-    const activeIndex = NavRoutes.findIndex(({ route }) => route === location.pathname);
+    const activeIndex = NavRoutes.findIndex(
+      ({ route }) =>
+        location.pathname === route || location.pathname.startsWith(`${route}/`),
+    );
     const activeLink = linkRefs.current[activeIndex];
     const underline = underlineRef.current;
 

@@ -1,47 +1,7 @@
 import { Auth } from "firebase/auth";
+import { PokemonTab } from "../utils/Constants";
 
 export {};
-
-// export interface Pokemon {
-//   id: number;
-//   name: string;
-//   types: string[];
-//   abilities: string[];
-//   img: string;
-//   user: string;
-// }
-
-// export interface PokemonProps {
-//   allPokemon: Pokemon[];
-//   user: string;
-//   removePokemon?: Function;
-//   addPokemon?: Function;
-//   registeredPokemonIds?: number[];
-// }
-
-// export interface PokemonCardProps {
-//   pokemon: Pokemon;
-//   page: string;
-//   onRemove?: Function;
-//   onAdd?: Function;
-// }
-
-// export interface Ability {
-//   ability: {
-//     name: string;
-//   };
-// }
-
-// export interface PokemonTyping {
-//   type: {
-//     name: string;
-//   };
-// }
-
-// export interface NavBarProps {
-//   handleLogout: () => void;
-//   isLoggedIn: boolean;
-// }
 
 export interface AuthProps {
   auth: Auth;
@@ -52,7 +12,6 @@ export interface AuthProps {
 
 export interface MyPokemonPageProps {
   auth: Auth;
-  user: string;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   isRegistered: (isRegistered: boolean) => void;
@@ -90,6 +49,16 @@ export interface CompareCardProps {
 
 export interface FooterProps {
   handleLogout: () => void;
+  currentPokemonTab: PokemonTab;
+  setCurrentPokemonTab: (tab: PokemonTab) => void;
+}
+
+export interface PokemonProps {
+  currentPokemonTab: PokemonTab;
+  setCurrentPokemonTab: (tab: PokemonTab) => void;
+  compareQueue: IndividualApiPokemon[];
+  onToggleCompare: (pokemon: IndividualApiPokemon) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
 }
 
 export interface User {
@@ -118,8 +87,52 @@ export interface PokemonTypes {
   };
 }
 
+export interface PokemonDisplay {
+  id: number;
+  name: string;
+  types: PokemonTypes[];
+  image: string;
+  stats: PokemonStats[];
+  evolutionStage: number;
+  evolution: { stage: number; pokemon: { name: string; url: string } }[];
+  abilities: { abilities: string[]; moves: string[] };
+}
+
+export interface PokemonStats {
+  name: string;
+  value: string;
+}
+
 export interface UsersPokemon extends IndividualApiPokemon {
   user?: string;
 }
 
 export type MatchupType = "resistance" | "weakness" | "strength" | "vulnerable";
+
+export type EvolutionChain = {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionChain[];
+};
+
+export type EvolutionEntry = {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+  stage: number;
+};
+
+export interface EvolutionProps {
+  currentPokemon: PokemonDisplay;
+  compareQueue: IndividualApiPokemon[];
+  onToggleCompare: (pokemon: IndividualApiPokemon) => void;
+  addPokemon: (pokemon: IndividualApiPokemon) => void;
+}
+
+export interface MovesProps{
+  currentPokemon: PokemonDisplay
+}
+

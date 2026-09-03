@@ -16,7 +16,7 @@
       route: "/list"
     },
     {
-      name: "TCG Cards",
+      name: "My TCG Cards",
       route: "/tcgcards"
     }
   ]

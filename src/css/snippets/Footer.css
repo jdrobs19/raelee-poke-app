@@ -15,6 +15,28 @@
   cursor: pointer;
 }
 
-.footer-nav {
+.footer-nav ul {
+  display: grid;
+  color: white;
+  list-style-type: none;
+  grid-template-columns: repeat(4, 1fr);
+  height: 100%;
+}
 
+.footer-nav ul li {
+  font-size: large;
+  letter-spacing: 0.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.footer-nav ul li:hover{
+  background-color: var(--accent-color);
+}
+
+.active{
+  background-color: var(--accent-color);
 }

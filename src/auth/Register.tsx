@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
-import { registerErrorNotification, registerSuccessNotification } from "../notifications";
+import { registerErrorNotification, registerSuccessNotification } from "../utils/notifications";
 
 export function Register({
   auth,
