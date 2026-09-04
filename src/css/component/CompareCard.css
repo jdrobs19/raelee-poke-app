@@ -1,0 +1,201 @@
+.compare-card{
+    height: 100%;
+    width: 100%;
+}
+
+.compare-card-empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-direction: column;
+    height: 100%;
+}
+
+.compare-card-empty button{
+    cursor: pointer;
+    border-radius: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background-color: var(--accent-color);
+    box-shadow: 0 12px 26px rgba(115, 216, 202, 0.2);
+}
+
+.compare-card-empty button svg{
+    font-size: 5rem;
+    color: white
+}
+
+.compare-card-empty h3{
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+}
+
+.compare-card-content{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 90% 10%;
+    grid-template-columns: 1fr;
+}
+
+.compare-card-info{
+    color: white;
+    background: linear-gradient(160deg, rgba(28, 48, 75, 0.72), rgba(13, 25, 43, 0.78));
+    border: 1px solid var(--border-color);
+    border-radius: 1rem 1rem 0 0;
+    text-transform: capitalize;
+    letter-spacing: .1rem;
+    font-size: larger;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 40% 60%;
+}
+
+.compare-card-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.compare-card-image{
+  height: 10rem;
+}
+
+.compare-card-buttons{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.compare-card-buttons button{
+    position: static;
+    bottom: auto;
+    right: auto;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border: 1px solid var(--border-color);
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    letter-spacing: .1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.compare-add-button:hover{
+    background-color: royalblue;
+}
+
+.compare-view-button:hover{
+    background-color: #27af0f;
+}
+
+.compare-remove-button:hover{
+    background-color: #e21b5a;
+}
+
+.compare-card-types-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-bottom: 1rem;
+}
+
+.compare-card-types{
+    display: grid;
+    grid-template-columns: minmax(0, 25%) minmax(0, 1fr);
+    gap: 1rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.pokemon-type-title{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    text-align: right;
+    overflow-wrap: anywhere;
+    line-height: 1.1;
+}
+
+.type-icons{
+    display:flex;
+    gap: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.type-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.type-image{
+    height: 3rem;
+    width: 3rem;
+}
+
+@media (max-width: 600px) {
+    .compare-card-content {
+        grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+    .compare-card-info {
+        grid-template-rows: auto minmax(0, 1fr);
+        padding: 0.75rem;
+    }
+
+    .compare-card-image {
+        height: 7rem;
+    }
+
+    .compare-card-types-container {
+        padding: 0 0.25rem 0.75rem;
+    }
+
+    .compare-card-types {
+        grid-template-columns: minmax(0, 4.5rem) minmax(0, 1fr);
+        gap: 0.5rem;
+    }
+
+    .pokemon-type-title {
+        font-size: 0.7rem;
+        line-height: 1.05;
+    }
+
+    .type-icons {
+        gap: 0.5rem;
+    }
+
+    .type-image {
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+
+    .compare-card-buttons button {
+        font-size: 0.75rem;
+        letter-spacing: 0.03rem;
+    }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+    .pokemon-type-title {
+        font-size: 0.7rem;
+        line-height: 1.05;
+    }
+}

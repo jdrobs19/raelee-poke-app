@@ -1,0 +1,23 @@
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+}
+
+.loading-pokeball {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+    animation: pokeball-spin 1s linear infinite;
+}
+
+@keyframes pokeball-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

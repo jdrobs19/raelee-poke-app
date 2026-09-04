@@ -1,0 +1,79 @@
+.details {
+  position: absolute;
+  top: 7rem;
+  left: 7rem;
+  color: white;
+  padding: 1rem;
+  width: 25rem;
+  text-transform: uppercase;
+
+  background: linear-gradient(var(--bg-color) calc(var(--dot-space) - var(--dot-size)),
+      transparent 1%
+    ) center,
+    var(--dot-color);
+}
+
+.details::before {
+  height: 0.3rem;
+  width: 9rem;
+  content: "";
+  background-color: var(--accent-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pokemon-name {
+  margin-bottom: 1rem;
+}
+
+.details button {
+  position: absolute;
+  right: 1rem;
+  bottom: -2rem;
+  padding: 0.8rem 0.8rem;
+  background-color: transparent;
+  border: 0.1rem solid var(--accent-color);
+  outline: none;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+@media (max-width: 700px) {
+  .details {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    margin: 1rem 0 2rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .pokemon-name {
+    font-size: clamp(1.5rem, 8vw, 2.25rem);
+  }
+
+  .details button {
+    right: 0.75rem;
+    bottom: -2.5rem;
+  }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+  .details {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    margin: 1rem 0 2rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .details button {
+    right: 0.75rem;
+    bottom: -2.5rem;
+  }
+}
+

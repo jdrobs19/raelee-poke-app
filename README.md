@@ -1,24 +1,29 @@
 # Raelee's Pokedex
 
-A responsive React and TypeScript Pokedex application powered by [PokeAPI](https://pokeapi.co/) and Firebase.
+A responsive React and TypeScript Pokedex application powered by [PokeAPI](https://pokeapi.co/) and Firebase. Browse the Pokemon index, inspect individual Pokemon, compare selections, and save a personal collection.
 
 ## Features
 
-- Browse Pokemon fetched from PokeAPI
+- Browse the PokeAPI Pokemon index, with details loaded for visible results
 - Search Pokemon by name with case-insensitive partial matching
 - Choose 10, 25, 50, or 100 Pokemon per page
-- Add Pokemon to a personal collection
-- Remove Pokemon from a personal collection
-- Register and sign in with Firebase Authentication
+- View individual Pokemon overview, evolution chain, abilities, moves, and type information
+- Queue up to two Pokemon for side-by-side comparison
+- Add Pokemon to a personal collection and remove them later
+- Register and sign in with Firebase Authentication from the My Pokemon page
 - Store each user's collection in Cloud Firestore
 - Responsive layout for desktop and mobile screens
+
+TCG card pages are present in the navigation and Pokemon detail tabs but are currently marked as coming soon.
 
 ## Tech Stack
 
 - React 19
 - TypeScript
-- React Router
+- React Router DOM
 - Firebase Authentication and Cloud Firestore
+- `@tcgdex/sdk` and `extract-colors`
+- React Icons
 - React Toastify
 - Create React App
 
@@ -55,7 +60,7 @@ The app uses the following Firebase services:
 - Firebase Authentication with email and password sign-in
 - Cloud Firestore collection named `pokemon`
 
-Pokemon documents are associated with the signed-in user's Firebase UID through the `user` field. Configure Firestore security rules so users can only read and modify their own documents.
+Pokemon documents are stored in the `pokemon` collection and associated with the signed-in user's Firebase UID through the `user` field. Configure Firestore security rules so users can only read and modify their own documents.
 
 Do not commit private credentials or production secrets. For a production deployment, use the configuration approach recommended by your hosting provider.
 
@@ -72,11 +77,14 @@ Do not commit private credentials or production secrets. For a production deploy
 
 | Route | Description |
 | --- | --- |
-| `/` | Browse available Pokemon |
-| `/login` | Sign in to an account |
-| `/register` | Create an account |
-| `/collection` | View the signed-in user's Pokemon collection |
+| `/search` | Search and browse Pokemon |
+| `/pokemon/:id` | View details for a Pokemon, including overview, evolution, moves, and TCG card tabs |
+| `/compare` | Compare the two Pokemon currently in the comparison queue |
+| `/list` | Sign in, register, and view the user's saved Pokemon |
+| `/tcgcards` | My TCG Cards page, currently coming soon |
+
+Any unknown route redirects to `/pokemon/1`.
 
 ## Data Source
 
-Pokemon data is loaded from the PokeAPI. The app fetches the Pokemon list and individual Pokemon details, including names, types, abilities, and front sprites.
+Pokemon data is loaded from the PokeAPI. The app fetches the Pokemon index and individual Pokemon details, including names, types, abilities, moves, stats, sprites, and evolution-chain information.

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import "./auth.css";
 import {useNavigate} from "react-router-dom";
-import { loginErrorNotification } from "../notifications";
+import { loginErrorNotification } from "../utils/notifications";
 
 export function Login({
   auth,
@@ -16,25 +16,30 @@ export function Login({
 
   const navigate = useNavigate();
 
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     try {
-        await signInWithEmailAndPassword(auth, email, password).then(
-            (userCredential) => {
-                const user = userCredential.user;
-                isRegistered(true);
-                isLoggedIn(true);
-                setUser(user.uid);
-                navigate("/");
-            } 
-        )
+      await signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          const user = userCredential.user;
+          isRegistered(true);
+          isLoggedIn(true);
+          setUser(user.uid);
+          navigate("/list");
+        },
+      );
     } catch (error) {
-        isRegistered(false);
-        loginErrorNotification(error as Error);
+      isRegistered(false);
+      loginErrorNotification(error as Error);
     }
-  }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleLogin();
+  };
 
   return (
-    <div className="auth-container">
+    <form className="auth-container" onSubmit={handleSubmit}>
       <h2>Login:</h2>
       <input
         type="email"
@@ -48,7 +53,7 @@ export function Login({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       ></input>
-      <button onClick={handleLogin}>Submit</button>
-    </div>
+      <button type="submit">Submit</button>
+    </form>
   );
 }
