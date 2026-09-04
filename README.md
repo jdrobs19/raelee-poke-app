@@ -2,6 +2,8 @@
 
 A responsive React and TypeScript Pokedex application powered by [PokeAPI](https://pokeapi.co/) and Firebase. Browse the Pokemon index, inspect individual Pokemon, compare selections, and save a personal collection.
 
+[Raelee's Pokédex](https://raelee-poke-app.web.app/)
+
 ## Features
 
 - Browse the PokeAPI Pokemon index, with details loaded for visible results
