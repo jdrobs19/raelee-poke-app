@@ -58,3 +58,64 @@
 .add-pokemon:hover {
   background-color: var(--accent-color);
 }
+
+@media (max-width: 700px) {
+  .typing-chart {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin: 1rem 0.75rem 1.5rem;
+    padding: 1rem 0.75rem;
+    clear: both;
+  }
+
+  .typing-chart ul {
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .typing-chart ul li {
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+
+  .add-pokemon {
+    position: static;
+    align-self: flex-end;
+    margin-top: 0.5rem;
+    padding: 0.55rem 0.7rem;
+  }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+  .typing-chart {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    right: auto;
+    bottom: auto;
+    width: auto;
+    margin: 1rem 0.75rem 1.5rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .typing-chart ul {
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .typing-chart ul li {
+    grid-template-columns: max-content minmax(0, 1fr);
+  }
+
+  .add-pokemon {
+    position: static;
+    align-self: flex-end;
+    margin-top: 0.5rem;
+    padding: 0.55rem 0.7rem;
+  }
+}

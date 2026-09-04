@@ -19,7 +19,9 @@
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
     background-color: var(--accent-color);
+    box-shadow: 0 12px 26px rgba(115, 216, 202, 0.2);
 }
 
 .compare-card-empty button svg{
@@ -41,7 +43,10 @@
 }
 
 .compare-card-info{
-    color: white; 
+    color: white;
+    background: linear-gradient(160deg, rgba(28, 48, 75, 0.72), rgba(13, 25, 43, 0.78));
+    border: 1px solid var(--border-color);
+    border-radius: 1rem 1rem 0 0;
     text-transform: capitalize;
     letter-spacing: .1rem;
     font-size: larger;
@@ -69,9 +74,12 @@
 }
 
 .compare-card-buttons button{
+    position: static;
+    bottom: auto;
+    right: auto;
     font-size: 1.2rem;
     text-transform: uppercase;
-    border: 1px solid rgba(255, 255, 255, .5);
+    border: 1px solid var(--border-color);
     color: white;
     background-color: transparent;
     cursor: pointer;
@@ -105,15 +113,21 @@
 
 .compare-card-types{
     display: grid;
-    grid-template-columns: 25% 75%;
-    gap:2rem;
+    grid-template-columns: minmax(0, 25%) minmax(0, 1fr);
+    gap: 1rem;
     width: 100%;
+    min-width: 0;
 }
 
 .pokemon-type-title{
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    text-align: right;
+    overflow-wrap: anywhere;
+    line-height: 1.1;
 }
 
 .type-icons{
@@ -134,4 +148,54 @@
 .type-image{
     height: 3rem;
     width: 3rem;
+}
+
+@media (max-width: 600px) {
+    .compare-card-content {
+        grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+    .compare-card-info {
+        grid-template-rows: auto minmax(0, 1fr);
+        padding: 0.75rem;
+    }
+
+    .compare-card-image {
+        height: 7rem;
+    }
+
+    .compare-card-types-container {
+        padding: 0 0.25rem 0.75rem;
+    }
+
+    .compare-card-types {
+        grid-template-columns: minmax(0, 4.5rem) minmax(0, 1fr);
+        gap: 0.5rem;
+    }
+
+    .pokemon-type-title {
+        font-size: 0.7rem;
+        line-height: 1.05;
+    }
+
+    .type-icons {
+        gap: 0.5rem;
+    }
+
+    .type-image {
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+
+    .compare-card-buttons button {
+        font-size: 0.75rem;
+        letter-spacing: 0.03rem;
+    }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+    .pokemon-type-title {
+        font-size: 0.7rem;
+        line-height: 1.05;
+    }
 }

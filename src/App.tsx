@@ -170,7 +170,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <ToastContainer />
+      <ToastContainer className="mobile-toast-container" />
       <div className="App">
         <Router>
           <NavBar />

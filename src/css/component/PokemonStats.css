@@ -40,3 +40,56 @@
   border-radius: 1rem;
   background-color: var(--accent-color);
 }
+
+@media (max-width: 700px) {
+  .stats-bar {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin: 2rem 0.75rem 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .stats-bar ul {
+    gap: 0.65rem;
+  }
+
+  .stats-bar ul li {
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .stats-bar ul li progress {
+    flex: 1;
+    min-width: 0;
+    max-width: 8rem;
+  }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+  .stats-bar {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin: 1.5rem 0.75rem 1rem;
+  }
+
+  .stats-bar ul {
+    gap: 0.5rem;
+  }
+
+  .stats-bar ul li {
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .stats-bar ul li progress {
+    flex: 1;
+    min-width: 0;
+    max-width: 12rem;
+  }
+}

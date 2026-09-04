@@ -1,5 +1,4 @@
 import pokeball from "../assets/pokeball-png-45334.png";
-import { GiHamburgerMenu } from "react-icons/gi";
 import NavRoutes from "../utils/NavRoutes"
 import "../css/snippets/NavBar.css"
 import { NavLink, useLocation } from "react-router-dom";
@@ -7,7 +6,6 @@ import { useEffect, useRef } from "react";
 
 export function NavBar() {
 
-  const MenuIcon = GiHamburgerMenu as any;
   const location = useLocation();
   const underlineRef = useRef<HTMLSpanElement | null>(null);
   const linkRefs = useRef<Array<HTMLAnchorElement | null>>([]);
@@ -49,9 +47,6 @@ export function NavBar() {
             );
           })}
         </ul>
-      </div>
-      <div className="nav-item">
-        <MenuIcon/>
       </div>
     </nav>
   );

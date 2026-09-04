@@ -1,5 +1,5 @@
 import { MainPage } from "../snippets/MainPage";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   PokemonApiData,
   IndividualApiPokemon,
@@ -24,179 +24,207 @@ export function Search({
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZE_OPTIONS[0]);
+  const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const pokemonDetailsCache = useRef(
+    new Map<string, IndividualApiPokemon>(),
+  );
 
-  const sortedPokemon = [...individualPokemon].sort((a, b) => a.id - b.id);
+  const sortedPokemon = [...pokemonData].sort(
+    (a, b) => Number(a.url.split("/").at(-2)) - Number(b.url.split("/").at(-2)),
+  );
   const filteredPokemon = sortedPokemon.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()),
   );
   const totalPages = Math.max(1, Math.ceil(filteredPokemon.length / pageSize));
   const safeCurrentPage = Math.min(currentPage, totalPages);
   const firstPokemonIndex = (safeCurrentPage - 1) * pageSize;
-  const visiblePokemon = filteredPokemon.slice(
-    firstPokemonIndex,
-    firstPokemonIndex + pageSize,
-  );
+
+  useEffect(() => {
+    const debounceTimer = window.setTimeout(() => {
+      setSearchTerm(searchInput);
+    }, 300);
+
+    return () => window.clearTimeout(debounceTimer);
+  }, [searchInput]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [individualPokemon.length, pageSize, searchTerm]);
+  }, [pokemonData.length, pageSize, searchTerm]);
 
   useEffect(() => {
     setCurrentPage((page) => Math.min(page, totalPages));
   }, [totalPages]);
 
-  //Fetch all Pokemon data
-  const getAllPokemonData = async () => {
-    const apiUrl: string = "https://pokeapi.co/api/v2/";
-    const limit: number = 2500;
-    const url: string = `${apiUrl}pokemon?limit=${limit}`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("No response received");
-      }
-
-      const data = await response.json();
-      setPokemonData(data.results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getIndividualPokemonData = useCallback(async () => {
-    if (pokemonData.length === 0) {
-      console.log("Pokémon data not loaded yet");
-      return [];
-    }
-
-    setIsLoading(true);
-    const allPokemonDetails: IndividualApiPokemon[] = [];
-
-    try {
-      // Fetch all Pokémon data
-      for (const pokemon of pokemonData) {
-        try {
-          const response = await fetch(pokemon.url);
-          if (!response.ok) {
-            throw new Error(`Failed to fetch Pokémon: ${pokemon.name}`);
-          }
-          const pokemonDetail = await response.json();
-
-          //Map the data to the IndividualApiPokemon interface
-          const individualPokemon: IndividualApiPokemon = {
-            id: pokemonDetail.id,
-            name: pokemonDetail.name,
-            images:
-              images[pokemonDetail.id] || defaultImages[pokemonDetail.id] || "",
-            types: pokemonDetail.types.map((typeObj: any) => {
-              const typeName = typeObj.type.name;
-              const typeData: PokemonTypes = {};
-              const typeInfo =
-                pokemonTypes[typeName as keyof typeof pokemonTypes];
-
-              if (typeInfo) {
-                typeData[typeName] = {
-                  image: typeInfo.image,
-                  resistance: typeInfo.resistance,
-                  weakness: typeInfo.weakness,
-                  strength: typeInfo.strength,
-                  vulnerable: typeInfo.vulnerable,
-                };
-              }
-
-              return typeData;
-            }),
-          };
-
-          allPokemonDetails.push(individualPokemon);
-        } catch (error) {
-          console.error(`Error fetching Pokémon: ${pokemon.name}`, error);
-        }
-      }
-
-      // Sort by ID
-      allPokemonDetails.sort((a, b) => a.id - b.id);
-
-      // Update state
-      setIndividualPokemon(allPokemonDetails);
-    } catch (error) {
-      console.error("Error fetching Pokémon data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pokemonData]);
-
+  // Fetch the lightweight name index once; details are loaded only for visible cards.
   useEffect(() => {
-    getAllPokemonData();
+    const getPokemonIndex = async () => {
+      try {
+        const response = await fetch(
+          "https://pokeapi.co/api/v2/pokemon?limit=2500",
+        );
+        if (!response.ok) {
+          throw new Error("No response received");
+        }
+
+        const data = await response.json();
+        setPokemonData(data.results);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    };
+
+    void getPokemonIndex();
   }, []);
 
   useEffect(() => {
-    if (pokemonData.length > 0) {
-      void getIndividualPokemonData();
+    if (pokemonData.length === 0) {
+      return;
     }
-  }, [pokemonData.length, getIndividualPokemonData]);
+
+    const filteredEntries = pokemonData
+      .slice()
+      .sort(
+        (a, b) =>
+          Number(a.url.split("/").at(-2)) - Number(b.url.split("/").at(-2)),
+      )
+      .filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()),
+      );
+    const visibleEntries = filteredEntries.slice(
+      firstPokemonIndex,
+      firstPokemonIndex + pageSize,
+    );
+    const controller = new AbortController();
+    const entriesToFetch = visibleEntries.filter(
+      (pokemon) => !pokemonDetailsCache.current.has(pokemon.url),
+    );
+
+    setIsLoading(entriesToFetch.length > 0);
+
+    const getVisiblePokemonDetails = async () => {
+      try {
+        await Promise.all(
+          entriesToFetch.map(async (pokemon) => {
+            const response = await fetch(pokemon.url, {
+              signal: controller.signal,
+            });
+            if (!response.ok) {
+              throw new Error(`Failed to fetch Pokémon: ${pokemon.name}`);
+            }
+
+            const pokemonDetail = await response.json();
+            const individualPokemon: IndividualApiPokemon = {
+              id: pokemonDetail.id,
+              name: pokemonDetail.name,
+              images:
+                images[pokemonDetail.id] || defaultImages[pokemonDetail.id] || "",
+              types: pokemonDetail.types.map((typeObj: any) => {
+                const typeName = typeObj.type.name;
+                const typeData: PokemonTypes = {};
+                const typeInfo =
+                  pokemonTypes[typeName as keyof typeof pokemonTypes];
+
+                if (typeInfo) {
+                  typeData[typeName] = {
+                    image: typeInfo.image,
+                    resistance: typeInfo.resistance,
+                    weakness: typeInfo.weakness,
+                    strength: typeInfo.strength,
+                    vulnerable: typeInfo.vulnerable,
+                  };
+                }
+
+                return typeData;
+              }),
+            };
+
+            pokemonDetailsCache.current.set(pokemon.url, individualPokemon);
+          }),
+        );
+
+        if (!controller.signal.aborted) {
+          setIndividualPokemon(
+            visibleEntries
+              .map((pokemon) => pokemonDetailsCache.current.get(pokemon.url))
+              .filter(
+                (pokemon): pokemon is IndividualApiPokemon => Boolean(pokemon),
+              ),
+          );
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Error fetching Pokémon data:", error);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    void getVisiblePokemonDetails();
+    return () => controller.abort();
+  }, [pokemonData, searchTerm, currentPage, pageSize, firstPokemonIndex]);
 
   return (
-    <>
+    <div className="search">
+      <div className="search-controls">
+        <input
+          type="text"
+          className="search-bar"
+          value={searchInput}
+          onChange={(event) => setSearchInput(event.target.value)}
+          placeholder="Search Pokémon"
+        />
+        <div className="pagination" aria-label="Registered Pokemon pages">
+          <label>
+            Pokémon per page:
+            <select
+              value={pageSize}
+              onChange={(event) => setPageSize(Number(event.target.value))}
+            >
+              {PAGE_SIZE_OPTIONS.map((option) => (
+                <option value={option} key={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+            disabled={safeCurrentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {safeCurrentPage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              setCurrentPage((page) => Math.min(totalPages, page + 1))
+            }
+            disabled={safeCurrentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      </div>
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="search">
-          <div className="search-controls">
-            <input
-              type="text"
-              className="search-bar"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search Pokémon"
-            />
-            <div className="pagination" aria-label="Registered Pokemon pages">
-              <label>
-                Pokémon per page:
-                <select
-                  value={pageSize}
-                  onChange={(event) => setPageSize(Number(event.target.value))}
-                >
-                  {PAGE_SIZE_OPTIONS.map((option) => (
-                    <option value={option} key={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <button
-                type="button"
-                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                disabled={safeCurrentPage === 1}
-              >
-                Previous
-              </button>
-              <span>
-                Page {safeCurrentPage} of {totalPages}
-              </span>
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentPage((page) => Math.min(totalPages, page + 1))
-                }
-                disabled={safeCurrentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-          <PokemonDetailsCard
-            pokemon={visiblePokemon}
-            compareQueue={compareQueue}
-            onToggleCompare={onToggleCompare}
-            addPokemon={addPokemon}
-          />
-        </div>
+        <PokemonDetailsCard
+          pokemon={individualPokemon}
+          compareQueue={compareQueue}
+          onToggleCompare={onToggleCompare}
+          addPokemon={addPokemon}
+        />
       )}
-    </>
+    </div>
   );
 }
 

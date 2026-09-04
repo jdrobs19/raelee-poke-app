@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import {
+  IndividualApiPokemon,
   MatchupType,
   PokemonInformationProps,
   PokemonStats,
+  PokemonTypes,
 } from "../types/types";
 import { pokemonTypes } from "../utils/PokemonTypes";
 import { pokemonTabs } from "../utils/Constants";
+import { PokemonImage } from "./PokemonImage";
 import "../css/component/InformationDetails.css";
 import "../css/component/PokemonStats.css";
 import "../css/component/PokemonTyping.css";
@@ -48,6 +51,28 @@ export function PokemonInformation({
     { label: "Vulnerable", key: "vulnerable" },
   ];
 
+  const pokemonToAdd: IndividualApiPokemon = {
+    id: currentPokemon.id,
+    name: currentPokemon.name,
+    images: currentPokemon.image,
+    types: currentPokemon.types.map((typeName) => {
+      const typeData: PokemonTypes = {};
+      const typeInfo = pokemonTypes[typeName as keyof typeof pokemonTypes];
+
+      if (typeInfo) {
+        typeData[typeName] = {
+          image: typeInfo.image,
+          resistance: typeInfo.resistance,
+          weakness: typeInfo.weakness,
+          strength: typeInfo.strength,
+          vulnerable: typeInfo.vulnerable,
+        };
+      }
+
+      return typeData;
+    }),
+  };
+
   return (
     <>
       <div className="details">
@@ -58,6 +83,7 @@ export function PokemonInformation({
           See evolution tree
         </button>
       </div>
+      <PokemonImage image={currentPokemon.image} />
       <div className="stats-bar">
         <ul>
           {currentPokemon.stats.map((stat: PokemonStats) => {
@@ -79,7 +105,12 @@ export function PokemonInformation({
             </li>
           ))}
         </ul>
-        <button className="add-pokemon" onClick={() => addPokemon}>Add Pokémon</button>
+        <button
+          className="add-pokemon"
+          onClick={() => addPokemon(pokemonToAdd)}
+        >
+          Add Pokémon
+        </button>
       </div>
     </>
   );

@@ -1,3 +1,39 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  background: #07111f;
+  color: #f4f7fb;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+@media (max-width: 600px) {
+  .mobile-toast-container.Toastify__toast-container--top-right {
+    top: auto;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+  }
+}
+
+@media (max-height: 600px) and (max-width: 900px) {
+  .main-page,
+  .pokemon-overview {
+    padding-bottom: 5rem;
+  }
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
 *{
   margin: 0;
   padding: 0;
@@ -6,21 +42,32 @@
 .app-container{
   position: relative;
   overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .App{
   height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
   display: grid;
-  grid-template-rows: 10vh auto 10vh;
+  grid-template-rows: 5rem minmax(0, 1fr) 5rem;
   grid-template-columns: 1fr;
-  background: rgba(4, 6, 20, .90)
+  background:
+    radial-gradient(circle at 15% 0%, rgba(90, 211, 194, 0.12), transparent 28rem),
+    linear-gradient(135deg, #07111f 0%, #0b1424 55%, #101b2c 100%);
+}
+
+.App > * {
+  min-width: 0;
+  min-height: 0;
 }
 
 .main-page{
-  margin: 0 5rem;
+  min-width: 0;
+  margin: 0 clamp(1rem, 5vw, 5rem);
+  scrollbar-color: rgba(132, 226, 213, 0.55) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -38,9 +85,35 @@
   width: 100%;
 }
 
+@media (max-width: 600px) {
+  .App {
+    height: 100vh;
+    grid-template-rows: 4.5rem minmax(0, 1fr) 4.5rem;
+  }
+
+  .main-page {
+    margin: 0 0.75rem;
+    overflow-y: auto;
+    min-height: 0;
+    padding-bottom: 4.5rem;
+  }
+
+  .pokemon-overview {
+    min-width: 0;
+    overflow-y: auto;
+    padding-bottom: 4.5rem;
+  }
+}
+
 :root{
---bg-color: rgba(255, 93, 93, 0);
---dot-color: rgba(255, 255, 255, 0.051);
+--accent-color: #73d8ca;
+--bg-color: rgba(255, 255, 255, 0.03);
+--dot-color: rgba(255, 255, 255, 0.06);
+--surface-color: rgba(15, 27, 45, 0.78);
+--surface-strong: rgba(20, 36, 58, 0.94);
+--border-color: rgba(186, 213, 227, 0.2);
+--muted-color: #a9b8c9;
+--shadow: 0 18px 40px rgba(2, 8, 20, 0.32);
 
 --dot-size: 1.5px;
 --dot-space: 22px;

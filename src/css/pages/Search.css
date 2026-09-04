@@ -20,13 +20,21 @@
 }
 
 .search-bar{
-    width: 38%;
-    min-width: 260px;
+    width: min(38%, 28rem);
+    min-width: 0;
     padding: 0.75rem 1rem;
     border-radius: 5px;
-    border: 2px solid #9494b4;
+    border: 1px solid var(--border-color);
+    outline: none;
     color: white;
-    background: rgba(255,255,255,0.08);
+    background: var(--surface-color);
+    box-shadow: var(--shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .search-bar:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(115, 216, 202, 0.16);
 }
 
 .pagination {
@@ -39,12 +47,22 @@
 }
 
 .pagination button {
+  position: static;
+  bottom: auto;
+  right: auto;
   padding: 0.5rem 1rem;
-  background-color: #5a4a9c;
-  border: 2px solid #9494b4;
-  border-radius: 5px;
+  background-color: var(--surface-strong);
+  border: 1px solid var(--border-color);
+  border-radius: 0.6rem;
   color: white;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #07111f;
 }
 
 .pagination button:disabled {
@@ -60,6 +78,56 @@
 
 .pagination select {
   padding: 0.4rem;
-  border: 2px solid #9494b4;
-  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.6rem;
+  background: var(--surface-strong);
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .search {
+    overflow-y: auto;
+    padding-bottom: 4.5rem;
+  }
+
+  .search-controls {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0 0.25rem;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .pagination {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    margin-right: 0;
+    gap: 0.5rem;
+  }
+
+  .pagination label {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .pagination button:first-of-type {
+    justify-self: start;
+  }
+
+  .pagination span {
+    justify-self: center;
+    white-space: nowrap;
+  }
+
+  .pagination button:last-child {
+    justify-self: end;
+  }
+
+  .pagination select {
+    max-width: 5rem;
+  }
 }

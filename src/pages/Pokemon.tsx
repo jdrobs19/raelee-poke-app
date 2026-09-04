@@ -90,24 +90,47 @@ export function Pokemon({
 
         const pokemonData = await pokemonResponse.json();
 
-        const speciesResponse = await fetch(
-          `${pokemonSpecies}/${pokemonData.id}`,
-        );
-        if (!speciesResponse.ok) {
-          throw new Error(`Failed to fetch Pokémon species: ${pokemonData.id}`);
-        }
+        let evolution: EvolutionEntry[] = [
+          {
+            pokemon: {
+              name: pokemonData.name,
+              url: `${individualPokemon}/${pokemonData.id}`,
+            },
+            stage: 1,
+          },
+        ];
+        let evolutionStage = 1;
 
-        const species = await speciesResponse.json();
-        const evolutionUrl = species.evolution_chain.url;
-        const evolutionResponse = await fetch(evolutionUrl);
-        if (!evolutionResponse.ok) {
-          throw new Error(`Failed to fetch Pokémon evolution info`);
+        try {
+          const speciesResponse = await fetch(
+            `${pokemonSpecies}/${pokemonData.id}`,
+          );
+          if (!speciesResponse.ok) {
+            throw new Error(`Failed to fetch Pokémon species: ${pokemonData.id}`);
+          }
+
+          const species = await speciesResponse.json();
+          const evolutionUrl = species.evolution_chain?.url;
+          if (!evolutionUrl) {
+            throw new Error(`No evolution chain for Pokémon: ${pokemonData.id}`);
+          }
+
+          const evolutionResponse = await fetch(evolutionUrl);
+          if (!evolutionResponse.ok) {
+            throw new Error(`Failed to fetch Pokémon evolution info`);
+          }
+
+          const evolutionResponseData = await evolutionResponse.json();
+          evolution = getEvolutionData(evolutionResponseData.chain);
+          evolutionStage =
+            evolution.find(({ pokemon }) => pokemon.name === pokemonData.name)
+              ?.stage ?? 1;
+        } catch (evolutionError) {
+          console.warn(
+            `Evolution data unavailable for Pokémon ${pokemonData.id}; using the Pokémon as a standalone entry.`,
+            evolutionError,
+          );
         }
-        const evolutionResponseData = await evolutionResponse.json();
-        const evolution = getEvolutionData(evolutionResponseData.chain);
-        const evolutionStage =
-          evolution.find(({ pokemon }) => pokemon.name === pokemonData.name)
-            ?.stage ?? 1;
 
         const pokemonStats: PokemonStats[] = pokemonData.stats.map(
           ({ base_stat, stat }: { base_stat: number; stat: { name: string } }) => ({
@@ -141,6 +164,7 @@ export function Pokemon({
         setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     },
     [id, getEvolutionData],
