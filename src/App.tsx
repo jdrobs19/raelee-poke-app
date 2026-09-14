@@ -35,6 +35,7 @@ import { Compare } from "./pages/Compare";
 import { MyTcgCards } from "./pages/MyTcgCards";
 import { IndividualApiPokemon, UsersPokemon } from "./types/types";
 import { PokemonTab, pokemonTabs } from "./utils/Constants";
+import { hydratePokemon, serializePokemon } from "./utils/PokemonStorage";
 
 function App() {
   const [comparePokemon, setComparePokemon] = useState<IndividualApiPokemon[]>(
@@ -86,7 +87,7 @@ function App() {
     const pokemonForUser = { ...pokemon, user };
 
     try {
-      await addDoc(collection(db, "pokemon"), pokemonForUser);
+      await addDoc(collection(db, "pokemon"), serializePokemon(pokemonForUser));
       setUsersPokemon((current) => [...current, pokemonForUser]);
       pokemonAddNotification(pokemon.name);
     } catch (error) {
@@ -135,7 +136,7 @@ function App() {
         const userPokemonData: UsersPokemon[] = [];
 
         querySnapshot.forEach((doc) => {
-          userPokemonData.push(doc.data() as UsersPokemon);
+          userPokemonData.push(hydratePokemon(doc.data() as any));
         });
 
         setUsersPokemon(userPokemonData);
