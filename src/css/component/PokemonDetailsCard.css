@@ -112,6 +112,14 @@
   color: green;
 }
 
+.added-icon {
+  color: var(--accent-color);
+}
+
+.added-icon:hover {
+  color: red;
+}
+
 .pokemon-card-compare {
   position: absolute;
   bottom: auto;

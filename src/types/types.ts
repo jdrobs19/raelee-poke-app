@@ -26,18 +26,23 @@ export interface PokemonDetailsCardProps {
   onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
   addPokemon?: (pokemon: IndividualApiPokemon) => void;
   removePokemon?: (pokemonId: number) => void;
+  usersPokemon?: UsersPokemon[];
 }
 
 export interface SearchProps {
   compareQueue?: IndividualApiPokemon[];
   onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
 }
 
 export interface CompareProps {
   compareQueue?: IndividualApiPokemon[];
   onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
 }
 
 export interface CompareCardProps {
@@ -45,6 +50,8 @@ export interface CompareCardProps {
   isEmpty?: boolean;
   onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon?: (pokemonId: number) => void;
+  usersPokemon?: UsersPokemon[];
 }
 
 export interface FooterProps {
@@ -59,6 +66,11 @@ export interface PokemonProps {
   compareQueue: IndividualApiPokemon[];
   onToggleCompare: (pokemon: IndividualApiPokemon) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
+  addTcgCard: (card: TcgApiData) => void;
+  removeTcgCard: (cardId: string) => void;
+  usersTcgCards: UsersTcgCard[];
 }
 
 export interface User {
@@ -98,6 +110,7 @@ export interface PokemonDisplay {
   abilities: { abilities: string[]; moves: string[] };
 }
 
+
 export interface PokemonStats {
   name: string;
   value: number;
@@ -130,6 +143,8 @@ export interface EvolutionProps {
   compareQueue: IndividualApiPokemon[];
   onToggleCompare: (pokemon: IndividualApiPokemon) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
 }
 
 export interface MovesProps {
@@ -140,10 +155,70 @@ export interface OverviewProps {
   currentPokemon: PokemonDisplay;
   setCurrentPokemonTab: (tab: PokemonTab) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
 }
 
 export interface PokemonInformationProps {
   currentPokemon: PokemonDisplay;
   setCurrentPokemonTab: (tab: PokemonTab) => void;
   addPokemon: (pokemon: IndividualApiPokemon) => void;
+  removePokemon: (pokemonId: number) => void;
+  usersPokemon: UsersPokemon[];
+}
+
+export interface TcgCardsProps {
+  currentPokemon: PokemonDisplay;
+  addTcgCard?: (card: TcgApiData) => void;
+  removeTcgCard?: (cardId: string) => void;
+  usersTcgCards?: UsersTcgCard[];
+}
+
+export interface TcgApiData{
+  id: string;
+  localId: string;
+  name: string;
+  image?: string;
+}
+
+export interface UsersTcgCard extends TcgApiData {
+  user?: string;
+}
+
+export interface MyTcgCardsPageProps {
+  auth: Auth;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  isRegistered: (isRegistered: boolean) => void;
+  setUser: (setUser: string) => void;
+  usersTcgCards: UsersTcgCard[];
+  removeTcgCard?: (cardId: string) => void;
+}
+
+export interface TcgSingleCardData{
+  rarity: string;
+  set: string;
+  variants?: CardVariants[];
+  cardPrices?: Record<string,CardPrice>;
+  priceUpdated: Date;
+}
+
+export interface CardVariants{
+  name: string;
+  available: boolean;
+}
+
+export interface CardPrice {
+  directLowPrice: number;
+  highPrice: number;
+  lowPrice: number;
+  marketPrice: number;
+  midPrice: number;
+}
+
+export interface TcgCardDetailsProps{
+  card: TcgApiData;
+  addTcgCard?: (card: TcgApiData) => void;
+  removeTcgCard?: (cardId: string) => void;
+  isSaved?: boolean;
 }

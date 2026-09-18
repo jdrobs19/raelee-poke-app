@@ -17,6 +17,8 @@ export function Search({
   compareQueue = [],
   onToggleCompare,
   addPokemon,
+  removePokemon,
+  usersPokemon,
 }: SearchProps) {
   const [pokemonData, setPokemonData] = useState<PokemonApiData[]>([]);
   const [individualPokemon, setIndividualPokemon] = useState<
@@ -222,6 +224,8 @@ export function Search({
           compareQueue={compareQueue}
           onToggleCompare={onToggleCompare}
           addPokemon={addPokemon}
+          removePokemon={removePokemon}
+          usersPokemon={usersPokemon}
         />
       )}
     </div>

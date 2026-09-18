@@ -21,9 +21,14 @@ export function CompareCard({
   isEmpty = false,
   onToggleCompare,
   addPokemon,
+  removePokemon,
+  usersPokemon = [],
 }: CompareCardProps) {
   const AddIcon = MdAdd as any;
   const navigate = useNavigate();
+  const isSaved = Boolean(
+    pokemon && usersPokemon.some((savedPokemon) => savedPokemon.id === pokemon.id),
+  );
 
   const typeMatchupArray = (
     types: PokemonTypes[],
@@ -146,10 +151,14 @@ export function CompareCard({
           </div>
           <div className="compare-card-buttons">
             <button
-              className="compare-add-button"
-              onClick={() => addPokemon(pokemon)}
+              className={
+                isSaved ? "compare-add-button added" : "compare-add-button"
+              }
+              onClick={() =>
+                isSaved ? removePokemon?.(pokemon.id) : addPokemon(pokemon)
+              }
             >
-              Add
+              {isSaved ? "Added ✓" : "Add"}
             </button>
             <button
               className="compare-view-button"

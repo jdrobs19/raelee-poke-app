@@ -4,7 +4,7 @@ import {
   PokemonTypes,
 } from "../types/types";
 import "../css/component/PokemonDetailsCard.css";
-import { MdCompareArrows, MdAdd, MdRemoveCircleOutline } from "react-icons/md";
+import { MdCompareArrows, MdAdd, MdRemoveCircleOutline, MdCheckCircle } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function PokemonDetailsCard({
@@ -13,13 +13,17 @@ export function PokemonDetailsCard({
   onToggleCompare,
   addPokemon,
   removePokemon,
+  usersPokemon = [],
 }: PokemonDetailsCardProps) {
   const CompareIcon = MdCompareArrows as any;
   const AddIcon = MdAdd as any;
   const RemoveIcon = MdRemoveCircleOutline as any;
+  const AddedIcon = MdCheckCircle as any;
 
   const location = useLocation();
   const navigate = useNavigate();
+  const isAddContext =
+    location.pathname.includes("/search") || location.pathname.includes("/pokemon");
 
   return (
     <div className="pokemon-details-card">
@@ -30,16 +34,29 @@ export function PokemonDetailsCard({
             const isQueued = compareQueue.some(
               (queuedPokemon) => queuedPokemon.id === p.id,
             );
+            const isSaved = usersPokemon.some(
+              (savedPokemon) => savedPokemon.id === p.id,
+            );
 
             return (
               <div className="pokemon-card" key={p.id}>
                 <div className="pokemon-card-list">
-                  {location.pathname.includes("/search") ||
-                  location.pathname.includes("/pokemon") ? (
-                    <AddIcon
-                      className="add-icon"
-                      onClick={() => addPokemon?.(p)}
-                    />
+                  {isAddContext ? (
+                    isSaved ? (
+                      <AddedIcon
+                        className="added-icon"
+                        title={`${p.name} is in your collection - click to remove`}
+                        aria-label={`remove ${p.name} from your collection`}
+                        onClick={() => removePokemon?.(p.id)}
+                      />
+                    ) : (
+                      <AddIcon
+                        className="add-icon"
+                        title={`add ${p.name} to your collection`}
+                        aria-label={`add ${p.name} to your collection`}
+                        onClick={() => addPokemon?.(p)}
+                      />
+                    )
                   ) : (
                     <RemoveIcon
                       className="remove-icon"

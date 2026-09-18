@@ -69,3 +69,27 @@ export const pokemonAlreadyExistsNotification = (pokemonName: string) => {
     position: "top-right",
   });
 };
+
+export const tcgCardAddNotification = (cardName: string) => {
+  toast.success(`${cardName} added to your collection!`, {
+    position: "top-right",
+  });
+};
+
+export const tcgCardRemoveNotification = (cardName: string) => {
+  toast.success(`${cardName} removed from your collection`, {
+    position: "top-right",
+  });
+};
+
+export const addTcgCardFailureNotification = () => {
+  toast.error("Please login to add trading cards", {
+    position: "top-right",
+  });
+};
+
+export const tcgCardAlreadyExistsNotification = (cardName: string) => {
+  toast.error(`${cardName} is already in your collection`, {
+    position: "top-right",
+  });
+};

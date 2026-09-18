@@ -81,7 +81,7 @@ export function MyPokemon({
   }
 
   return (
-    <div className="my-pokemon">
+    <div className="my-collection">
       <div className="search-controls my-pokemon-controls">
         <input
           type="text"

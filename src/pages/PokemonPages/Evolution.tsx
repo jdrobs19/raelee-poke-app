@@ -14,6 +14,8 @@ export function Evolution({
   compareQueue,
   onToggleCompare,
   addPokemon,
+  removePokemon,
+  usersPokemon,
 }: EvolutionProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [evolutionPokemon, setEvolutionPokemon] = useState<
@@ -94,6 +96,8 @@ export function Evolution({
           compareQueue={compareQueue}
           onToggleCompare={onToggleCompare}
           addPokemon={addPokemon}
+          removePokemon={removePokemon}
+          usersPokemon={usersPokemon}
         />
       ) : (
         <Loading />

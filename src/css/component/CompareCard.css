@@ -91,6 +91,18 @@
     background-color: royalblue;
 }
 
+.compare-add-button.added{
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #07111f;
+}
+
+.compare-add-button.added:hover{
+    background-color: #e21b5a;
+    border-color: #e21b5a;
+    color: white;
+}
+
 .compare-view-button:hover{
     background-color: #27af0f;
 }

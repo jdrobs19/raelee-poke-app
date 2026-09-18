@@ -1,7 +1,185 @@
 .my-tcg-cards{
     display: grid;
-    justify-content: center;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+    height: 100%;
+    overflow-y: auto;
+    min-height: 0;
+    padding: clamp(0.5rem, 2vw, 1rem);
+    align-content: start;
+    align-items: start;
+}
+
+.my-tcg-cards img {
+    display: block;
+    width: 100%;
+    max-width: 18rem;
+    aspect-ratio: 2.5 / 3.5;
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.tcg-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    align-self: start;
+    position: relative;
+}
+
+.tcg-card-list {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.tcg-card-list svg {
+    transition: all 0.3s ease-in-out;
+}
+
+.tcg-card-list svg:hover {
+    transform: scale(1.5);
+}
+
+.tcg-card-list .remove-icon {
+    color: red;
+}
+
+.tcg-card-list .add-icon {
+    color: green;
+}
+
+.tcg-card-list .added-icon {
+    color: var(--accent-color);
+}
+
+.tcg-card-list .added-icon:hover {
+    color: red;
+}
+
+.tcg-card-image,
+.tcg-card-image-unavailable {
+    width: 100%;
+    max-width: 18rem;
+    aspect-ratio: 2.5 / 3.5;
+    margin: 0 auto;
+}
+
+.tcg-card-details {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+    padding: 0.65rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--muted-color) 35%, transparent);
+    border-radius: 0.35rem;
+    background: color-mix(in srgb, var(--accent-color) 8%, transparent);
+    font-size: 0.78rem;
+}
+
+.tcg-card-heading {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.tcg-card-rarity {
+    color: var(--accent-color);
+}
+
+.tcg-card-name {
+    font-size: 0.95rem;
+}
+
+.tcg-card-set,
+.tcg-card-price-updated {
+    color: var(--muted-color);
+}
+
+.tcg-card-variants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.tcg-card-variant {
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.2rem;
+    background: color-mix(in srgb, var(--accent-color) 18%, transparent);
+}
+
+.tcg-card-prices {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.tcg-card-price-group {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.tcg-card-price-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--muted-color) 20%, transparent);
+}
+
+.tcg-card-price-row span:first-child {
+    overflow-wrap: anywhere;
+    color: var(--muted-color);
+}
+
+.tcg-card-price-row span:last-child {
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.tcg-card-image-unavailable {
+    display: grid;
     align-items: center;
-    font-size: xx-large;
-    color: white;
+    justify-items: center;
+    padding: 1rem;
+    border: 1px solid var(--muted-color);
+    color: var(--muted-color);
+    text-align: center;
+}
+
+.tcg-cards-empty {
+    grid-column: 1 / -1;
+    align-self: center;
+    justify-self: center;
+    max-width: 32rem;
+    padding: 2rem;
+    color: var(--muted-color);
+    text-align: center;
+}
+
+.tcg-cards-empty p + p {
+    margin-top: 0.75rem;
+}
+
+.tcg-cards-empty a {
+    color: var(--accent-color);
+}
+
+@media (max-width: 1000px) {
+    .my-tcg-cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 750px) {
+    .my-tcg-cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
+    .my-tcg-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }

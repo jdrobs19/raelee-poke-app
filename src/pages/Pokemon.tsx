@@ -27,6 +27,11 @@ export function Pokemon({
   compareQueue,
   onToggleCompare,
   addPokemon,
+  removePokemon,
+  usersPokemon,
+  addTcgCard,
+  removeTcgCard,
+  usersTcgCards,
 }: PokemonProps) {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
@@ -213,6 +218,8 @@ export function Pokemon({
               currentPokemon={currentPokemon}
               setCurrentPokemonTab={setCurrentPokemonTab}
               addPokemon ={addPokemon}
+              removePokemon={removePokemon}
+              usersPokemon={usersPokemon}
             />
           )}
           {currentPokemonTab === pokemonTabs.evolution && (
@@ -221,12 +228,21 @@ export function Pokemon({
               compareQueue={compareQueue}
               onToggleCompare={onToggleCompare}
               addPokemon={addPokemon}
+              removePokemon={removePokemon}
+              usersPokemon={usersPokemon}
             />
           )}
           {currentPokemonTab === pokemonTabs.moves && (
             <Moves currentPokemon={currentPokemon} />
           )}
-          {currentPokemonTab === pokemonTabs.tcgCards && <TcgCards />}
+          {currentPokemonTab === pokemonTabs.tcgCards && (
+            <TcgCards
+              currentPokemon={currentPokemon}
+              addTcgCard={addTcgCard}
+              removeTcgCard={removeTcgCard}
+              usersTcgCards={usersTcgCards}
+            />
+          )}
         </>
       ) : (
         <Loading />

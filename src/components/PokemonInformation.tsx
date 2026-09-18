@@ -17,6 +17,8 @@ export function PokemonInformation({
   currentPokemon,
   setCurrentPokemonTab,
   addPokemon,
+  removePokemon,
+  usersPokemon,
 }: PokemonInformationProps) {
   useEffect(() => {
     const statBars = document.querySelectorAll(".stats-bar progress");
@@ -73,6 +75,10 @@ export function PokemonInformation({
     }),
   };
 
+  const isSaved = usersPokemon.some(
+    (savedPokemon) => savedPokemon.id === currentPokemon.id,
+  );
+
   return (
     <>
       <div className="details">
@@ -106,10 +112,12 @@ export function PokemonInformation({
           ))}
         </ul>
         <button
-          className="add-pokemon"
-          onClick={() => addPokemon(pokemonToAdd)}
+          className={isSaved ? "add-pokemon added" : "add-pokemon"}
+          onClick={() =>
+            isSaved ? removePokemon(currentPokemon.id) : addPokemon(pokemonToAdd)
+          }
         >
-          Add Pokémon
+          {isSaved ? "Added ✓ (click to remove)" : "Add Pokémon"}
         </button>
       </div>
     </>

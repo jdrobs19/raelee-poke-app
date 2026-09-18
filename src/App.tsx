@@ -21,19 +21,28 @@ import { Footer } from "./snippets/Footer";
 import { ToastContainer } from "react-toastify";
 import {
   addPokemonFailureNotification,
+  addTcgCardFailureNotification,
   compareQueueNotification,
   logoutErrorNotification,
   logoutSuccessNotification,
   pokemonAddNotification,
   pokemonAlreadyExistsNotification,
   pokemonRemoveNotification,
+  tcgCardAddNotification,
+  tcgCardAlreadyExistsNotification,
+  tcgCardRemoveNotification,
 } from "./utils/notifications";
 import { Search } from "./pages/Search";
 import { MyPokemon } from "./pages/MyPokemon";
 import { Pokemon } from "./pages/Pokemon";
 import { Compare } from "./pages/Compare";
 import { MyTcgCards } from "./pages/MyTcgCards";
-import { IndividualApiPokemon, UsersPokemon } from "./types/types";
+import {
+  IndividualApiPokemon,
+  TcgApiData,
+  UsersPokemon,
+  UsersTcgCard,
+} from "./types/types";
 import { PokemonTab, pokemonTabs } from "./utils/Constants";
 import { hydratePokemon, serializePokemon } from "./utils/PokemonStorage";
 
@@ -45,6 +54,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<string>("");
   const [usersPokemon, setUsersPokemon] = useState<UsersPokemon[]>([]);
+  const [usersTcgCards, setUsersTcgCards] = useState<UsersTcgCard[]>([]);
   const [currentPokemonTab, setCurrentPokemonTab] = useState<PokemonTab>(
     pokemonTabs.overview,
   );
@@ -120,9 +130,61 @@ function App() {
     }
   };
 
+  const addTcgCard = async (card: TcgApiData) => {
+    if (!user) {
+      addTcgCardFailureNotification();
+      return;
+    }
+
+    const alreadyExists = usersTcgCards.some(
+      (savedCard) => savedCard.id === card.id,
+    );
+
+    if (alreadyExists) {
+      tcgCardAlreadyExistsNotification(card.name);
+      return;
+    }
+
+    const cardForUser = { ...card, user };
+
+    try {
+      await addDoc(collection(db, "tcgCards"), cardForUser);
+      setUsersTcgCards((current) => [...current, cardForUser]);
+      tcgCardAddNotification(card.name);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
+  const removeTcgCard = async (cardId: string) => {
+    if (!user) return;
+
+    try {
+      const q = query(
+        collection(db, "tcgCards"),
+        where("user", "==", user),
+        where("id", "==", cardId),
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) return;
+
+      await deleteDoc(snapshot.docs[0].ref);
+
+      setUsersTcgCards((current) =>
+        current.filter((card) => card.id !== cardId),
+      );
+      tcgCardRemoveNotification("Trading card removed");
+    } catch (error) {
+      console.error("Error removing document: ", error);
+    }
+  };
+
   useEffect(() => {
     if (!user) {
       setUsersPokemon([]);
+      setUsersTcgCards([]);
       return;
     }
 
@@ -145,7 +207,27 @@ function App() {
       }
     };
 
+    const getUsersTcgCards = async () => {
+      try {
+        const userTcgCardsQuery = query(
+          collection(db, "tcgCards"),
+          where("user", "==", user),
+        );
+        const querySnapshot = await getDocs(userTcgCardsQuery);
+        const userTcgCardsData: UsersTcgCard[] = [];
+
+        querySnapshot.forEach((doc) => {
+          userTcgCardsData.push(doc.data() as UsersTcgCard);
+        });
+
+        setUsersTcgCards(userTcgCardsData);
+      } catch (err) {
+        console.error("Error fetching user's trading cards: ", err);
+      }
+    };
+
     void getUsersPokemon();
+    void getUsersTcgCards();
   }, [user]);
 
   const toggleComparePokemon = (pokemon: IndividualApiPokemon) => {
@@ -183,6 +265,8 @@ function App() {
                   compareQueue={comparePokemon}
                   onToggleCompare={toggleComparePokemon}
                   addPokemon={addPokemon}
+                  removePokemon={removePokemon}
+                  usersPokemon={usersPokemon}
                 />
               }
             />
@@ -209,6 +293,11 @@ function App() {
                   compareQueue={comparePokemon}
                   onToggleCompare={toggleComparePokemon}
                   addPokemon={addPokemon}
+                  removePokemon={removePokemon}
+                  usersPokemon={usersPokemon}
+                  addTcgCard={addTcgCard}
+                  removeTcgCard={removeTcgCard}
+                  usersTcgCards={usersTcgCards}
                 />
               }
             />
@@ -219,10 +308,25 @@ function App() {
                   compareQueue={comparePokemon}
                   onToggleCompare={toggleComparePokemon}
                   addPokemon={addPokemon}
+                  removePokemon={removePokemon}
+                  usersPokemon={usersPokemon}
                 />
               }
             />
-            <Route path="/tcgcards" element={<MyTcgCards />} />
+            <Route
+              path="/tcgcards"
+              element={
+                <MyTcgCards
+                  auth={auth}
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  isRegistered={setIsRegistered}
+                  setUser={setUser}
+                  usersTcgCards={usersTcgCards}
+                  removeTcgCard={removeTcgCard}
+                />
+              }
+            />
             <Route path="*" element={<Navigate to="/pokemon/1" replace />} />
           </Routes>
           <Footer
