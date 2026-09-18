@@ -29,28 +29,36 @@
 }
 
 .tcg-card-list {
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    z-index: 1;
-    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(7, 17, 31, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 18px rgba(7, 17, 31, 0.35);
+    padding: 0.35rem;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .tcg-card-list svg {
-    transition: all 0.3s ease-in-out;
+    display: block;
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .tcg-card-list svg:hover {
-    transform: scale(1.5);
+    transform: scale(1.1);
+    filter: brightness(1.1);
 }
 
 .tcg-card-list .remove-icon {
-    color: red;
+    color: #ff6b7d;
 }
 
 .tcg-card-list .add-icon {
-    color: green;
+    color: #8ef0b8;
 }
 
 .tcg-card-list .added-icon {
@@ -58,7 +66,7 @@
 }
 
 .tcg-card-list .added-icon:hover {
-    color: red;
+    color: #ff6b7d;
 }
 
 .tcg-card-image,
@@ -81,9 +89,18 @@
     font-size: 0.78rem;
 }
 
+.tcg-card-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
 .tcg-card-heading {
     display: grid;
     gap: 0.15rem;
+    min-width: 0;
+    flex: 1;
 }
 
 .tcg-card-rarity {

@@ -47,32 +47,6 @@ export function TcgCardDetails({ card, addTcgCard, removeTcgCard, isSaved }: Tcg
 
   return (
     <article className="tcg-card">
-      {(addTcgCard || removeTcgCard) && (
-        <div className="tcg-card-list">
-          {isAddContext ? (
-            isSaved ? (
-              <AddedIcon
-                className="added-icon"
-                title={`${card.name} is in your collection - click to remove`}
-                aria-label={`remove ${card.name} from your collection`}
-                onClick={() => removeTcgCard?.(card.id)}
-              />
-            ) : (
-              <AddIcon
-                className="add-icon"
-                title={`add ${card.name} to your collection`}
-                aria-label={`add ${card.name} to your collection`}
-                onClick={() => addTcgCard?.(card)}
-              />
-            )
-          ) : (
-            <RemoveIcon
-              className="remove-icon"
-              onClick={() => removeTcgCard?.(card.id)}
-            />
-          )}
-        </div>
-      )}
       {card.image ? (
         <img
           className="tcg-card-image"
@@ -89,13 +63,41 @@ export function TcgCardDetails({ card, addTcgCard, removeTcgCard, isSaved }: Tcg
         </div>
       )}
       <div className="tcg-card-details">
-        <div className="tcg-card-heading">
-          <strong className="tcg-card-name">{card.name}</strong>
-          {singleCardData && (
-            <>
-              <strong className="tcg-card-rarity">{singleCardData.rarity}</strong>
-              <span className="tcg-card-set">{singleCardData.set}</span>
-            </>
+        <div className="tcg-card-header-row">
+          <div className="tcg-card-heading">
+            <strong className="tcg-card-name">{card.name}</strong>
+            {singleCardData && (
+              <>
+                <strong className="tcg-card-rarity">{singleCardData.rarity}</strong>
+                <span className="tcg-card-set">{singleCardData.set}</span>
+              </>
+            )}
+          </div>
+          {(addTcgCard || removeTcgCard) && (
+            <div className="tcg-card-list">
+              {isAddContext ? (
+                isSaved ? (
+                  <AddedIcon
+                    className="added-icon"
+                    title={`${card.name} is in your collection - click to remove`}
+                    aria-label={`remove ${card.name} from your collection`}
+                    onClick={() => removeTcgCard?.(card.id)}
+                  />
+                ) : (
+                  <AddIcon
+                    className="add-icon"
+                    title={`add ${card.name} to your collection`}
+                    aria-label={`add ${card.name} to your collection`}
+                    onClick={() => addTcgCard?.(card)}
+                  />
+                )
+              ) : (
+                <RemoveIcon
+                  className="remove-icon"
+                  onClick={() => removeTcgCard?.(card.id)}
+                />
+              )}
+            </div>
           )}
         </div>
         {singleCardData && (

@@ -91,25 +91,37 @@
 .pokemon-card-list {
   position: absolute;
   top: 0.7rem;
-  left: 0.8rem;
-  font-size: 1.5rem;
+  right: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(7, 17, 31, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 18px rgba(7, 17, 31, 0.35);
+  padding: 0.32rem;
   cursor: pointer;
+  z-index: 2;
 }
 
 .pokemon-card svg {
-  transition: all 0.3s ease-in-out;
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .pokemon-card svg:hover {
-  transform: scale(1.5);
+  transform: scale(1.15);
+  filter: brightness(1.1);
 }
 
 .remove-icon {
-  color: red;
+  color: #ff6b7d;
 }
 
 .add-icon {
-  color: green;
+  color: #8ef0b8;
 }
 
 .added-icon {
@@ -117,7 +129,7 @@
 }
 
 .added-icon:hover {
-  color: red;
+  color: #ff6b7d;
 }
 
 .pokemon-card-compare {
