@@ -17,10 +17,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-direction: column;
-  background: linear-gradient(160deg, rgba(28, 48, 75, 0.88), rgba(13, 25, 43, 0.9));
-  border: 1px solid var(--border-color);
-  border-radius: 1rem;
+  background: var(--card-gradient);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
   padding: 1rem;
   box-shadow: var(--shadow);
   position: relative;
@@ -39,6 +38,7 @@
   margin-top: 1rem;
   color: #f4f7fb;
   font-size: 1rem;
+  text-transform: capitalize;
 }
 
 .pokemon-card img {
@@ -134,18 +134,20 @@
 
 .pokemon-card-compare {
   position: absolute;
-  bottom: auto;
   top: 0.7rem;
-  right: 1rem;
-  border: none;
-  background: transparent;
-  padding: 0;
+  left: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(7, 17, 31, 0.8);
+  box-shadow: 0 8px 18px rgba(7, 17, 31, 0.35);
+  padding: 0.32rem;
   margin: 0;
   font-size: 1.5rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
 .pokemon-card-compare:focus-visible {

@@ -1,12 +1,10 @@
-import { ComponentType } from "react";
+import { ComponentType, createElement } from "react";
 
-export function MainPage<P>(Component: ComponentType<P>) {
-  const WrappedComponent = Component as ComponentType<any>;
-
+export function MainPage<P extends object>(Component: ComponentType<P>) {
   return function Wrapped(props: P) {
     return (
       <div className="main-page">
-        <WrappedComponent {...(props as any)} />
+        {createElement<P>(Component, props)}
       </div>
     );
   };

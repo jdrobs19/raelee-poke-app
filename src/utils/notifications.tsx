@@ -1,95 +1,22 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const logoutErrorNotification = (error: Error) => {
-  toast.error(`Logout failed: ${error.message}`, {
-    position: "top-right",
-  });
+const notify = {
+  error: (message: string) => toast.error(message, { position: "top-right" }),
+  success: (message: string) => toast.success(message, { position: "top-right" }),
 };
 
-export const logoutSuccessNotification = () => {
-  toast.success("Logout successful!", {
-    position: "top-right",
-  });
-};
-
-export const loginErrorNotification = (error: Error) => {
-  toast.error(`Login failed: ${error.message}`, {
-    position: "top-right",
-  });
-};
-
-export const pokemonAddNotification = (pokemonName: string) => {
-  toast.success(`${pokemonName} added to your collection!`, {
-    position: "top-right",
-  });
-};
-
-export const pokemonRemoveNotification = (pokemonName: string) => {
-  toast.success(`${pokemonName} removed from your collection`, {
-    position: "top-right",
-  });
-};
-
-export const registerErrorNotification = (error: Error) => {
-  toast.error(`Registration failed: ${error.message}`, {
-    position: "top-right",
-  });
-};
-
-export const registerSuccessNotification = () => {
-  toast.success("Registration successful!", {
-    position: "top-right",
-  });
-};
-
-export const compareQueueNotification = (
-  pokemonName: string,
-  action: string,
-) => {
-  if (action === "add") {
-    toast.success(`${pokemonName} added to compare`, {
-      position: "top-right",
-    });
-  } else if (action === "remove") {
-    toast.success(`${pokemonName} removed from compare`, {
-      position: "top-right",
-    });
-  }
-};
-
-export const addPokemonFailureNotification = () => {
-  toast.error("Please login to add pokemon", {
-    position: "top-right",
-  });
-};
-
-export const pokemonAlreadyExistsNotification = (pokemonName: string) => {
-  toast.error(`${pokemonName} is already in your collection`, {
-    position: "top-right",
-  });
-};
-
-export const tcgCardAddNotification = (cardName: string) => {
-  toast.success(`${cardName} added to your collection!`, {
-    position: "top-right",
-  });
-};
-
-export const tcgCardRemoveNotification = (cardName: string) => {
-  toast.success(`${cardName} removed from your collection`, {
-    position: "top-right",
-  });
-};
-
-export const addTcgCardFailureNotification = () => {
-  toast.error("Please login to add trading cards", {
-    position: "top-right",
-  });
-};
-
-export const tcgCardAlreadyExistsNotification = (cardName: string) => {
-  toast.error(`${cardName} is already in your collection`, {
-    position: "top-right",
-  });
-};
+export const logoutErrorNotification = (error: Error) => notify.error(`Logout failed: ${error.message}`);
+export const logoutSuccessNotification = () => notify.success("Logout successful!");
+export const loginErrorNotification = (error: Error) => notify.error(`Login failed: ${error.message}`);
+export const pokemonAddNotification = (name: string) => notify.success(`${name} added to your collection!`);
+export const pokemonRemoveNotification = (name: string) => notify.success(`${name} removed from your collection`);
+export const registerErrorNotification = (error: Error) => notify.error(`Registration failed: ${error.message}`);
+export const registerSuccessNotification = () => notify.success("Registration successful!");
+export const compareQueueNotification = (name: string, action: string) => notify.success(`${name} ${action === "add" ? "added to" : "removed from"} compare`);
+export const addPokemonFailureNotification = () => notify.error("Please login to add pokemon");
+export const pokemonAlreadyExistsNotification = (name: string) => notify.error(`${name} is already in your collection`);
+export const tcgCardAddNotification = (name: string) => notify.success(`${name} added to your collection!`);
+export const tcgCardRemoveNotification = (name: string) => notify.success(`${name} removed from your collection`);
+export const addTcgCardFailureNotification = () => notify.error("Please login to add trading cards");
+export const tcgCardAlreadyExistsNotification = (name: string) => notify.error(`${name} is already in your collection`);

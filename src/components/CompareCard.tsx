@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import "../css/component/CompareCard.css";
 import { pokemonTypes } from "../utils/PokemonTypes";
 import { useNavigate } from "react-router-dom";
+import { useAppState } from "../context/AppStateContext";
 
 const matchupTypes: MatchupType[] = [
   "strength",
@@ -19,11 +20,8 @@ const matchupTypes: MatchupType[] = [
 export function CompareCard({
   pokemon,
   isEmpty = false,
-  onToggleCompare,
-  addPokemon,
-  removePokemon,
-  usersPokemon = [],
 }: CompareCardProps) {
+  const { toggleComparePokemon, addPokemon, removePokemon, usersPokemon } = useAppState();
   const AddIcon = MdAdd as any;
   const navigate = useNavigate();
   const isSaved = Boolean(
@@ -168,7 +166,7 @@ export function CompareCard({
             </button>
             <button
               className="compare-remove-button"
-              onClick={() => onToggleCompare?.(pokemon)}
+              onClick={() => toggleComparePokemon(pokemon)}
             >
               Remove
             </button>

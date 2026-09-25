@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  --card-gradient: linear-gradient(160deg, rgba(28, 48, 75, 0.88), rgba(13, 25, 43, 0.9));
+  --card-border: 1px solid var(--border-color);
+  --card-radius: 1rem;
+}
+
 body {
   overflow-x: hidden;
   background: #07111f;
