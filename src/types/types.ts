@@ -22,11 +22,6 @@ export interface MyPokemonPageProps {
 
 export interface PokemonDetailsCardProps {
   pokemon: IndividualApiPokemon[];
-  compareQueue?: IndividualApiPokemon[];
-  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
-  addPokemon?: (pokemon: IndividualApiPokemon) => void;
-  removePokemon?: (pokemonId: number) => void;
-  usersPokemon?: UsersPokemon[];
 }
 
 export interface SearchProps {
@@ -48,10 +43,6 @@ export interface CompareProps {
 export interface CompareCardProps {
   pokemon?: IndividualApiPokemon;
   isEmpty?: boolean;
-  onToggleCompare?: (pokemon: IndividualApiPokemon) => void;
-  addPokemon: (pokemon: IndividualApiPokemon) => void;
-  removePokemon?: (pokemonId: number) => void;
-  usersPokemon?: UsersPokemon[];
 }
 
 export interface FooterProps {
@@ -218,7 +209,26 @@ export interface CardPrice {
 
 export interface TcgCardDetailsProps{
   card: TcgApiData;
-  addTcgCard?: (card: TcgApiData) => void;
-  removeTcgCard?: (cardId: string) => void;
-  isSaved?: boolean;
+}
+
+export type TcgCardDetailResponse = {
+  rarity: string;
+  set: { name: string };
+  variants?: Record<string, boolean>;
+  pricing?: { tcgplayer?: TcgSingleCardData["cardPrices"] & { updated?: string } };
+}
+
+export interface PaginationControlsProps {
+  itemLabel: string;
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  onPageSizeChange: (pageSize: number) => void;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
+}
+
+export interface SearchPaginationOptions<T> {
+  getSearchText: (item: T) => string;
+  compareItems: (first: T, second: T) => number;
 }

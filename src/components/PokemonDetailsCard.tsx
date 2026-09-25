@@ -6,15 +6,12 @@ import {
 import "../css/component/PokemonDetailsCard.css";
 import { MdCompareArrows, MdAdd, MdRemoveCircleOutline, MdCheckCircle } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppState } from "../context/AppStateContext";
 
 export function PokemonDetailsCard({
   pokemon,
-  compareQueue = [],
-  onToggleCompare,
-  addPokemon,
-  removePokemon,
-  usersPokemon = [],
 }: PokemonDetailsCardProps) {
+  const { compareQueue, toggleComparePokemon, addPokemon, removePokemon, usersPokemon } = useAppState();
   const CompareIcon = MdCompareArrows as any;
   const AddIcon = MdAdd as any;
   const RemoveIcon = MdRemoveCircleOutline as any;
@@ -72,7 +69,7 @@ export function PokemonDetailsCard({
                       ? `remove ${p.name} from compare`
                       : `compare ${p.name}`
                   }
-                  onClick={() => onToggleCompare?.(p)}
+                  onClick={() => toggleComparePokemon(p)}
                 >
                   {!isQueued ? (
                     <CompareIcon className="compare-icon" />
